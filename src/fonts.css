@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "Orbit Display";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/bricolage.woff2") format("woff2");
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Orbit Text";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/inter.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Orbit Mono";
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/mono.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}

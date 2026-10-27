@@ -1,0 +1,108 @@
+/* Orbit for the central login (auth.uni-oldenburg.de, NetIQ Advanced Authentication).
+   Visual only: dims the photo and turns the login dialog into a glass card in Orbit's style. */
+
+html.sx {
+  --sx-accent: #ff5a36;
+  --a-surface: rgba(21, 21, 28, 0.78);
+  --a-surface-2: rgba(255, 255, 255, 0.06);
+  --a-line: rgba(255, 255, 255, 0.12);
+  --a-line-strong: rgba(255, 255, 255, 0.22);
+  --a-ink: #eceaf4;
+  --a-ink-2: #b9b6c8;
+  --a-ink-3: #8a879c;
+  --a-on-accent: #ffffff;
+}
+
+/* Darken and soften the campus photo behind the card */
+html.sx body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 60% at 50% 45%, rgba(10, 10, 16, 0.25), rgba(10, 10, 16, 0.75)),
+    linear-gradient(180deg, rgba(10, 10, 16, 0.35), rgba(10, 10, 16, 0.65));
+  -webkit-backdrop-filter: blur(5px) saturate(115%);
+  backdrop-filter: blur(5px) saturate(115%);
+}
+html.sx #pageContainer { position: relative; z-index: 1; }
+
+html.sx #dialog {
+  background: var(--a-surface) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--a-line) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7) !important;
+  overflow: hidden;
+  color: var(--a-ink) !important;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
+/* Header: keep the university logo, drop the heavy blue bar */
+html.sx #dialogHeader,
+html.sx .dialog-header.banner-background {
+  background: transparent !important;
+  border-bottom: 1px solid var(--a-line) !important;
+}
+html.sx #productName,
+html.sx .product-name {
+  color: var(--a-ink) !important;
+  font: 700 19px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  letter-spacing: -0.02em;
+}
+html.sx .logout-icons a,
+html.sx .logout-username { color: var(--a-ink-2) !important; }
+
+html.sx #dialogBody,
+html.sx .dialog-body,
+html.sx #dialogBody label,
+html.sx #dialogBody p,
+html.sx #dialogBody span,
+html.sx #dialogBody div { color: var(--a-ink) !important; }
+
+/* Inputs */
+html.sx #dialog input[type="text"],
+html.sx #dialog input[type="password"],
+html.sx #dialog input[type="email"],
+html.sx #dialog input[type="tel"],
+html.sx #dialog input:not([type]) {
+  background: var(--a-surface-2) !important;
+  color: var(--a-ink) !important;
+  border: 1px solid var(--a-line-strong) !important;
+  border-radius: 12px !important;
+  min-height: 44px;
+  padding: 0 14px !important;
+  box-sizing: border-box;
+  font: 500 15px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+html.sx #dialog input::placeholder { color: var(--a-ink-3) !important; opacity: 1; }
+html.sx #dialog input:focus {
+  border-color: var(--sx-accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--sx-accent) 25%, transparent) !important;
+}
+
+/* Primary actions */
+html.sx #dialog button,
+html.sx #dialog input[type="submit"],
+html.sx #dialog .button {
+  background: var(--sx-accent) !important;
+  color: var(--a-on-accent) !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  min-height: 42px;
+  padding: 0 22px !important;
+  font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif !important;
+  box-shadow: 0 12px 26px -14px var(--sx-accent) !important;
+  cursor: pointer;
+  transition: filter 0.12s, transform 0.12s;
+}
+html.sx #dialog button:hover,
+html.sx #dialog input[type="submit"]:hover,
+html.sx #dialog .button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+html.sx #dialog a { color: color-mix(in oklab, var(--sx-accent) 70%, #ffffff) !important; }

@@ -1,0 +1,91 @@
+{
+  "manifest_version": 3,
+  "name": "UOL StudIP Theme",
+  "short_name": "UOL Theme",
+  "version": "1.0.0",
+  "author": "Furkan Çoban",
+  "homepage_url": "https://github.com/ofurkancoban",
+  "description": "A bold, fast redesign for Stud.IP at Uni Oldenburg: today timeline, command palette, dark mode and a calmer layout.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "UOL StudIP Theme settings",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://elearning.uni-oldenburg.de/*",
+    "https://auth.uni-oldenburg.de/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://elearning.uni-oldenburg.de/*"
+      ],
+      "css": [
+        "src/fonts.css",
+        "src/theme.css",
+        "src/components.css",
+        "src/motion.css"
+      ],
+      "js": [
+        "src/boot.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://elearning.uni-oldenburg.de/*"
+      ],
+      "js": [
+        "src/data.js",
+        "src/palette.js",
+        "src/today.js",
+        "src/todo.js",
+        "src/notify.js",
+        "src/app.js",
+        "src/motion.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://auth.uni-oldenburg.de/*"
+      ],
+      "css": [
+        "src/auth.css"
+      ],
+      "js": [
+        "src/boot.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "fonts/*.woff2"
+      ],
+      "matches": [
+        "https://elearning.uni-oldenburg.de/*"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  }
+}

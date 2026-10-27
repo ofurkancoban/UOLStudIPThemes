@@ -1,0 +1,197 @@
+@font-face {
+  font-family: "Orbit Display";
+  src: url("../fonts/bricolage.woff2") format("woff2");
+  font-weight: 400 800;
+}
+@font-face {
+  font-family: "Orbit Text";
+  src: url("../fonts/inter.woff2") format("woff2");
+  font-weight: 400 700;
+}
+
+:root {
+  --accent: #ff5a36;
+  --bg: #0f0f15;
+  --surface: #17171f;
+  --surface-2: #20202b;
+  --line: rgba(255, 255, 255, 0.08);
+  --ink: #eeedf5;
+  --ink-2: #a3a1b4;
+  --ink-3: #6f6d84;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 16px;
+  background:
+    radial-gradient(260px 160px at 100% 0%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  font: 13px/1.4 "Orbit Text", system-ui, sans-serif;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.dot {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: url("../icons/icon.svg") center / contain no-repeat;
+  box-shadow: 0 6px 16px -6px var(--accent);
+}
+h1 {
+  margin: 0;
+  font: 750 19px/1.05 "Orbit Display", system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+.brand p { margin: 3px 0 0; color: var(--ink-3); font-size: 11.5px; }
+
+main { transition: opacity 0.2s; }
+main.off { opacity: 0.35; pointer-events: none; }
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+h2 {
+  margin: 0 0 9px;
+  font: 700 10.5px/1 "Orbit Text", sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.seg {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+.seg button {
+  flex: 1;
+  border: 0;
+  padding: 7px 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: 600 12.5px/1 "Orbit Text", sans-serif;
+  cursor: pointer;
+}
+.seg button.on { background: var(--surface-2); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatches button,
+.swatches label {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+.swatches button.on { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px currentColor; }
+.swatches label {
+  background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red);
+  overflow: hidden;
+}
+.swatches label input { opacity: 0; position: absolute; inset: 0; cursor: pointer; }
+
+.toggles { padding: 4px 12px; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.row:last-child { border-bottom: 0; }
+.row input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+.switch { position: relative; width: 44px; height: 26px; cursor: pointer; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch span {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  transition: background 0.2s;
+}
+.switch span::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 0.2s cubic-bezier(.3, 1.5, .5, 1);
+}
+.switch input:checked + span { background: var(--accent); }
+.switch input:checked + span::after { transform: translateX(18px); }
+
+.keys div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  color: var(--ink-3);
+}
+.keys span { margin-left: auto; color: var(--ink-2); }
+kbd {
+  font: 600 11px/1 ui-monospace, Menlo, monospace;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+/* Accent mode and reminder controls */
+.seg + .swatches { margin-top: 10px; }
+.swatches.muted { opacity: 0.35; pointer-events: none; }
+section > .row + .seg { margin-top: 8px; }
+.seg.off { opacity: 0.35; pointer-events: none; }
+
+.credit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 8px 12px 8px 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.credit:hover { border-color: var(--accent); transform: translateY(-1px); }
+.credit img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.credit span { display: flex; flex-direction: column; line-height: 1.2; }
+.credit small { color: var(--ink-3); font-size: 10.5px; }
+.credit strong { font-size: 13px; }
+.credit em { margin-left: auto; color: var(--accent); font-style: normal; font-size: 11.5px; font-weight: 600; }

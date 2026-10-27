@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UOL StudIP Theme</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="dot"></span>
+      <div>
+        <h1>UOL StudIP Theme</h1>
+        <p>for Stud.IP Oldenburg</p>
+      </div>
+    </div>
+    <label class="switch" title="Enable or disable the redesign">
+      <input type="checkbox" id="enabled">
+      <span></span>
+    </label>
+  </header>
+
+  <main id="panel">
+    <section>
+      <h2>Appearance</h2>
+      <div class="seg" data-key="mode">
+        <button data-val="auto">Auto</button>
+        <button data-val="light">Light</button>
+        <button data-val="dark">Dark</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Accent</h2>
+      <div class="seg" data-key="accentMode">
+        <button data-val="fixed" title="Always the color picked below">Fixed</button>
+        <button data-val="time" title="Changes through the day">Time of day</button>
+        <button data-val="course" title="Course pages use the course's color group">Course</button>
+      </div>
+      <div class="swatches" id="swatches"></div>
+    </section>
+
+    <section>
+      <h2>Class reminders</h2>
+      <label class="row"><span>Notify before a class</span><input type="checkbox" data-key="notify"></label>
+      <div class="seg" data-key="notifyLead" id="lead">
+        <button data-val="5">5 min</button>
+        <button data-val="10">10 min</button>
+        <button data-val="15">15 min</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Density</h2>
+      <div class="seg" data-key="density">
+        <button data-val="comfy">Comfy</button>
+        <button data-val="compact">Compact</button>
+      </div>
+    </section>
+
+    <section class="toggles">
+      <label class="row"><span>Today panel on start page</span><input type="checkbox" data-key="today"></label>
+      <label class="row"><span>Background glow</span><input type="checkbox" data-key="aurora"></label>
+      <label class="row"><span>Motion and animations</span><input type="checkbox" data-key="motion"></label>
+      <label class="row"><span>Hide sidebar on start page</span><input type="checkbox" data-key="rail"></label>
+    </section>
+
+    <section class="keys">
+      <h2>Shortcuts</h2>
+      <div><kbd>⌘</kbd><kbd>K</kbd> or <kbd>/</kbd><span>Command palette</span></div>
+      <div><kbd>⇧</kbd><kbd>↵</kbd><span>Open course files</span></div>
+      <div><kbd>[</kbd><span>Toggle sidebar</span></div>
+      <div><kbd>⇧</kbd><kbd>D</kbd><span>Toggle dark mode</span></div>
+    </section>
+  </main>
+
+  <a class="credit" href="https://github.com/ofurkancoban" target="_blank" rel="noopener" title="GitHub profile">
+    <img src="../icons/author.jpg" alt="">
+    <span><small>Made by</small><strong>Furkan Çoban</strong></span>
+    <em>@ofurkancoban ↗</em>
+  </a>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+/* =========================================================================
+   Orbit motion layer. Everything here only runs with html.sx-motion, which boot.js
+   sets when the "Motion" setting is on and the OS does not ask for reduced motion.
+   ========================================================================= */
+
+/* ---------- 3D tilt and sheen on tiles (4) --------------------------------- */
+
+html.sx.sx-motion .sx-tilt {
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px)) !important;
+  transition: transform 0.2s cubic-bezier(.2, .8, .2, 1), box-shadow 0.2s, border-color 0.2s !important;
+  transform-style: preserve-3d;
+}
+html.sx.sx-motion .sx-tilt.is-tilting {
+  --lift: -4px;
+  transition: transform 0.06s linear, box-shadow 0.2s, border-color 0.2s !important;
+}
+html.sx.sx-motion .sx-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 60%);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.25s;
+  z-index: 2;
+}
+html.sx.sx-motion .sx-tilt.is-tilting .sx-sheen { opacity: 1; }
+html.sx.sx-motion.sx-dark .sx-sheen {
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.1), transparent 60%);
+  mix-blend-mode: screen;
+}
+
+/* ---------- Button ripple ring (5) ------------------------------------------ */
+
+html.sx.sx-motion .sx-ring { animation: sx-ring 0.55s cubic-bezier(.2, .8, .2, 1); }
+@keyframes sx-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--sx-accent) 55%, transparent); }
+  100% { box-shadow: 0 0 0 12px transparent; }
+}
+html.sx.sx-motion .button:active,
+html.sx.sx-motion button:active,
+html.sx.sx-motion input[type="submit"]:active { transform: scale(0.97); }
+
+/* ---------- To-do completion (6) ------------------------------------------ */
+
+html.sx.sx-motion .sx-todo-item { transition: background 0.12s, opacity 0.3s, transform 0.3s; }
+html.sx.sx-motion .sx-todo-item.is-completing .sx-todo-check { animation: sx-check-pop 0.35s cubic-bezier(.3, 1.6, .5, 1); }
+html.sx.sx-motion .sx-todo-item.is-completing .sx-todo-check::after { animation: sx-check-draw 0.25s 0.05s ease-out both; }
+html.sx.sx-motion .sx-todo-item.is-completing .sx-todo-text {
+  color: var(--sx-ink-3);
+  background: linear-gradient(currentColor, currentColor) 0 55% / 0 1.5px no-repeat;
+  animation: sx-strike 0.3s 0.05s ease-out forwards;
+}
+html.sx.sx-motion .sx-todo-item.is-leaving { opacity: 0; transform: translateX(14px); }
+html.sx.sx-motion .sx-todo-item.is-new { animation: sx-todo-in 0.35s cubic-bezier(.2, .8, .2, 1); }
+@keyframes sx-check-pop { 0% { transform: scale(1); } 45% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes sx-check-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes sx-strike { to { background-size: 100% 1.5px; } }
+@keyframes sx-todo-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.sx-confetti {
+  position: fixed;
+  z-index: 10000;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: sx-confetti 0.75s cubic-bezier(.15, .7, .3, 1) forwards;
+}
+@keyframes sx-confetti {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.4); opacity: 0; }
+}
+
+/* ---------- Live class pulse and flowing progress (7) --------------------- */
+
+html.sx.sx-motion .sx-ev.is-live .sx-ev-bar { animation: sx-breathe 2.4s ease-in-out infinite; }
+html.sx.sx-motion .sx-ev.is-live .sx-ev-bar::after {
+  height: 0;
+  animation: sx-fill var(--dur, 1s) linear var(--delay, 0s) forwards;
+}
+html.sx.sx-motion .sx-live-tag { animation: sx-live-dot 1.6s ease-in-out infinite; }
+@keyframes sx-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--c) 0%, transparent); }
+  50% { box-shadow: 0 0 12px 1px color-mix(in oklab, var(--c) 55%, transparent); }
+}
+@keyframes sx-fill { from { height: 0; } to { height: 100%; } }
+@keyframes sx-live-dot { 50% { opacity: 0.55; } }
+
+/* ---------- Flip clock (9) --------------------------------------------------- */
+
+html.sx .sx-clock-digits { display: inline-flex; perspective: 300px; }
+html.sx .sx-digit { display: inline-block; }
+html.sx.sx-motion .sx-digit.is-flipping { animation: sx-flip 0.5s cubic-bezier(.3, 1.4, .5, 1); transform-origin: 50% 60%; }
+@keyframes sx-flip {
+  0% { transform: rotateX(90deg); opacity: 0; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+/* ---------- Badge bounce (10) ----------------------------------------------- */
+
+html.sx.sx-motion #navigation-level-1-items a.sx-bump::before { animation: sx-bump 0.7s cubic-bezier(.3, 1.8, .5, 1); }
+@keyframes sx-bump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.45) translateY(-3px); }
+  60% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Living aurora (11) ---------------------------------------------- */
+
+@property --a1x { syntax: "<percentage>"; inherits: false; initial-value: 12%; }
+@property --a1y { syntax: "<percentage>"; inherits: false; initial-value: 8%; }
+@property --a2x { syntax: "<percentage>"; inherits: false; initial-value: 92%; }
+@property --a2y { syntax: "<percentage>"; inherits: false; initial-value: 20%; }
+@property --a3x { syntax: "<percentage>"; inherits: false; initial-value: 60%; }
+
+html.sx.sx-motion:not(.sx-noaurora) body::before {
+  background:
+    radial-gradient(42vmax 32vmax at var(--a1x) var(--a1y), var(--sx-bg-glow-1), transparent 70%),
+    radial-gradient(38vmax 30vmax at var(--a2x) var(--a2y), var(--sx-bg-glow-2), transparent 70%),
+    radial-gradient(32vmax 28vmax at var(--a3x) 100%, color-mix(in oklab, var(--sx-accent) 12%, transparent), transparent 70%);
+  animation:
+    sx-drift 38s ease-in-out infinite alternate,
+    sx-aurora 26s ease-in-out infinite alternate,
+    sx-aurora-hue 40s ease-in-out infinite alternate;
+}
+@keyframes sx-aurora {
+  0% { --a1x: 12%; --a1y: 8%; --a2x: 92%; --a2y: 20%; --a3x: 60%; }
+  33% { --a1x: 30%; --a1y: 18%; --a2x: 78%; --a2y: 8%; --a3x: 40%; }
+  66% { --a1x: 18%; --a1y: 30%; --a2x: 88%; --a2y: 36%; --a3x: 72%; }
+  100% { --a1x: 6%; --a1y: 14%; --a2x: 70%; --a2y: 24%; --a3x: 54%; }
+}
+@keyframes sx-aurora-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(28deg); }
+}
+
+/* ---------- Cursor glow on card borders (12) -------------------------------- */
+
+html.sx.sx-motion .sx-glow-host { position: relative; }
+html.sx.sx-motion .sx-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 3;
+  background: radial-gradient(280px circle at var(--gx, 50%) var(--gy, 50%), color-mix(in oklab, var(--sx-accent) 85%, transparent), transparent 65%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 0.3s;
+}
+html.sx.sx-motion .sx-glow-host:hover > .sx-glow { opacity: 1; }
+
+/* ---------- Sky in the greeting card (13) ----------------------------------- */
+/* Every phase is derived from the accent so the sky reads as part of the hero's own glow,
+   never as a second palette on top of it. --sky-tint only nudges the accent per phase. */
+
+html.sx .sx-sky { display: none; }
+html.sx.sx-motion .sx-hero > *:not(.sx-sky) { position: relative; z-index: 1; }
+html.sx.sx-motion .sx-sky {
+  --sky-tint: var(--sx-accent);
+  --sky-glow: color-mix(in oklab, var(--sx-accent) 70%, var(--sky-tint));
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  background: linear-gradient(200deg, color-mix(in oklab, var(--sky-glow) 12%, transparent), transparent 55%);
+}
+html.sx.sx-motion .sx-sky::before,
+html.sx.sx-motion .sx-sky::after { content: ""; position: absolute; inset: 0; }
+/* Sun or moon, sitting in the same corner as the hero's accent light */
+html.sx.sx-motion .sx-sky::before {
+  inset: auto;
+  right: 40px;
+  top: -40px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--sky-glow) 45%, transparent), color-mix(in oklab, var(--sky-glow) 12%, transparent) 50%, transparent 70%);
+  animation: sx-sky-float 14s ease-in-out infinite alternate;
+}
+@keyframes sx-sky-float { to { transform: translate(-12px, 8px); } }
+html.sx.sx-motion[data-sky="dawn"] .sx-sky { --sky-tint: #ffb347; }
+html.sx.sx-motion[data-sky="day"] .sx-sky { --sky-tint: #ffd27a; }
+html.sx.sx-motion[data-sky="dusk"] .sx-sky { --sky-tint: #c264ff; }
+html.sx.sx-motion[data-sky="night"] .sx-sky { --sky-tint: #7c8cff; }
+html.sx.sx-motion[data-sky="night"] .sx-sky::before {
+  width: 90px;
+  height: 90px;
+  right: 70px;
+  top: 10px;
+  background: radial-gradient(circle at 40% 40%, color-mix(in oklab, var(--sky-glow) 35%, #fff 25%), color-mix(in oklab, var(--sky-glow) 12%, transparent) 55%, transparent 72%);
+}
+html.sx.sx-motion[data-sky="night"] .sx-sky::after {
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 22%, var(--sx-ink), transparent),
+    radial-gradient(1px 1px at 28% 64%, var(--sx-ink), transparent),
+    radial-gradient(1.4px 1.4px at 44% 18%, var(--sx-ink), transparent),
+    radial-gradient(1px 1px at 58% 44%, var(--sx-ink), transparent),
+    radial-gradient(1.2px 1.2px at 74% 28%, var(--sx-ink), transparent),
+    radial-gradient(1px 1px at 86% 70%, var(--sx-ink), transparent),
+    radial-gradient(1.3px 1.3px at 36% 84%, var(--sx-ink), transparent),
+    radial-gradient(1px 1px at 92% 12%, var(--sx-ink), transparent);
+  opacity: 0.5;
+  animation: sx-twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes sx-twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
+
+/* ---------- Skeleton loaders (14) ------------------------------------------- */
+
+html.sx.sx-motion .progress-indicator-wrapper .progress-indicator,
+html.sx.sx-motion .progress-indicator-wrapper .progress-indicator::before {
+  background-image: none !important;
+}
+html.sx.sx-motion .progress-indicator-wrapper .progress-indicator {
+  width: min(420px, 80%) !important;
+  height: 64px !important;
+  margin: 18px auto !important;
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, transparent, color-mix(in oklab, var(--sx-ink) 8%, transparent), transparent) 0 0 / 200% 100%,
+    linear-gradient(var(--sx-surface-2), var(--sx-surface-2)) 0 0 / 100% 14px no-repeat,
+    linear-gradient(var(--sx-surface-2), var(--sx-surface-2)) 0 25px / 70% 14px no-repeat,
+    linear-gradient(var(--sx-surface-2), var(--sx-surface-2)) 0 50px / 45% 14px no-repeat !important;
+  animation: sx-shimmer 1.2s linear infinite;
+}
+html.sx.sx-motion .progress-indicator-wrapper .progress-indicator-description { color: var(--sx-ink-3) !important; }
+html.sx.sx-motion .studip-loading-skeleton {
+  background: linear-gradient(90deg, var(--sx-surface-2), var(--sx-surface-3), var(--sx-surface-2)) 0 0 / 200% 100% !important;
+  border-radius: 8px;
+  animation: sx-shimmer 1.2s linear infinite;
+}
+html.sx.sx-motion #stream-container .loading-indicator span { background: var(--sx-accent) !important; }
+
+/* ---------- Top progress bar (15) ------------------------------------------- */
+
+.sx-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  height: 2.5px;
+  width: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--sx-accent), color-mix(in oklab, var(--sx-accent) 50%, #fff));
+  box-shadow: 0 0 10px var(--sx-accent), 0 0 4px var(--sx-accent);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.4s cubic-bezier(.2, .8, .2, 1), opacity 0.4s;
+}
+html:not(.sx-motion) .sx-topbar { display: none; }
+.sx-topbar.is-loading { width: 70%; transition: width 6s cubic-bezier(.1, .7, .2, 1); }
+.sx-topbar.is-done { width: 100%; opacity: 0; transition: width 0.3s ease-out, opacity 0.4s 0.25s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.sx-motion * { animation: none !important; transition: none !important; }
+}

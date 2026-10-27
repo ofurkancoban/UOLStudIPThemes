@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0.15" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#ff6b40"/>
+      <stop offset="0.45" stop-color="#ff5a36"/>
+      <stop offset="1" stop-color="#a33c30"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="0.3" cy="0.15" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#bg)"/>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#shine)"/>
+  <!-- Stud.IP mark, scaled from its 16px favicon -->
+  <path transform="translate(28 28) scale(4.5)" fill="#fff" d="M7.975 1.052A6.978 6.978 0 0 0 1 8.022h2.077a4.9 4.9 0 0 1 4.897-4.896 4.9 4.9 0 0 1 4.899 4.897 4.9 4.9 0 0 1-4.898 4.9V15a6.977 6.977 0 0 0 6.973-6.977 6.973 6.973 0 0 0-6.973-6.971zm2.62 6.971a2.62 2.62 0 0 0-2.621-2.617 2.618 2.618 0 0 0 0 5.239 2.623 2.623 0 0 0 2.621-2.622z"/>
+</svg>

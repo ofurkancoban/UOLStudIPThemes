@@ -1,0 +1,3664 @@
+/* =========================================================================
+   Orbit for Stud.IP: global theme layer.
+   Every rule is scoped under html.sx so disabling the extension restores
+   the original design instantly.
+   ========================================================================= */
+
+html.sx {
+  --sx-accent: #ff5a36;
+  --sx-accent-soft: color-mix(in oklab, var(--sx-accent) 14%, transparent);
+  --sx-accent-line: color-mix(in oklab, var(--sx-accent) 40%, transparent);
+  --sx-accent-text: color-mix(in oklab, var(--sx-accent) 78%, #1b1530);
+  --sx-on-accent: #ffffff;
+
+  --sx-bg: #f3f1ec;
+  --sx-bg-glow-1: color-mix(in oklab, var(--sx-accent) 22%, transparent);
+  --sx-bg-glow-2: rgba(92, 120, 255, 0.16);
+  --sx-surface: #ffffff;
+  --sx-surface-2: #f8f7f3;
+  --sx-surface-3: #efede7;
+  --sx-glass: rgba(255, 255, 255, 0.72);
+  --sx-line: rgba(24, 20, 40, 0.09);
+  --sx-line-strong: rgba(24, 20, 40, 0.16);
+  --sx-ink: #17151f;
+  --sx-ink-2: #5a5866;
+  --sx-ink-3: #8d8b98;
+  --sx-link: var(--sx-accent-text);
+  --sx-good: #1f9d6b;
+  --sx-warn: #c98a12;
+  --sx-bad: #d9363e;
+  --sx-info: var(--sx-accent);
+
+  --sx-radius: 18px;
+  --sx-radius-sm: 11px;
+  --sx-radius-xs: 8px;
+  --sx-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 2px rgba(20, 16, 40, 0.05), 0 8px 24px -12px rgba(20, 16, 40, 0.14);
+  --sx-shadow-lg: 0 24px 60px -20px rgba(20, 16, 40, 0.35), 0 2px 6px rgba(20, 16, 40, 0.08);
+  --sx-gap: 22px;
+  --sx-pad: 20px;
+  --sx-row: 12px;
+
+  --sx-font: "Orbit Text", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sx-display: "Orbit Display", "Orbit Text", ui-sans-serif, system-ui, sans-serif;
+  --sx-mono: "Orbit Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  color-scheme: light;
+  background: var(--sx-bg) !important;
+}
+
+html.sx.sx-dark {
+  --sx-accent-text: color-mix(in oklab, var(--sx-accent) 70%, #ffffff);
+  --sx-bg: #0c0c11;
+  --sx-bg-glow-1: color-mix(in oklab, var(--sx-accent) 20%, transparent);
+  --sx-bg-glow-2: rgba(92, 120, 255, 0.12);
+  --sx-surface: #15151c;
+  --sx-surface-2: #1b1b24;
+  --sx-surface-3: #23232e;
+  --sx-glass: rgba(21, 21, 28, 0.72);
+  --sx-line: rgba(255, 255, 255, 0.07);
+  --sx-line-strong: rgba(255, 255, 255, 0.14);
+  --sx-ink: #eceaf4;
+  --sx-ink-2: #a9a7b8;
+  --sx-ink-3: #75738a;
+  --sx-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+  --sx-shadow-lg: 0 30px 80px -20px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color-scheme: dark;
+}
+
+html.sx.sx-compact {
+  --sx-gap: 14px;
+  --sx-pad: 14px;
+  --sx-row: 7px;
+  --sx-radius: 14px;
+}
+
+/* ---------- Base ---------------------------------------------------------- */
+
+html.sx body {
+  background: transparent !important;
+  color: var(--sx-ink);
+  font-family: var(--sx-font) !important;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+
+html.sx body::before {
+  /* Aurora glow behind everything */
+  content: "";
+  position: fixed;
+  inset: -20vmax;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40vmax 30vmax at 12% 8%, var(--sx-bg-glow-1), transparent 70%),
+    radial-gradient(36vmax 28vmax at 92% 20%, var(--sx-bg-glow-2), transparent 70%),
+    radial-gradient(30vmax 26vmax at 60% 100%, color-mix(in oklab, var(--sx-accent) 10%, transparent), transparent 70%);
+  animation: sx-drift 38s ease-in-out infinite alternate;
+}
+
+html.sx.sx-noaurora body::before { display: none; }
+
+@keyframes sx-drift {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  100% { transform: translate3d(3vmax, -2vmax, 0) rotate(6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.sx body::before { animation: none; }
+}
+
+html.sx a,
+html.sx a:link,
+html.sx a:visited {
+  color: var(--sx-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+html.sx a:hover { color: var(--sx-accent); }
+
+html.sx h1, html.sx h2, html.sx h3, html.sx h4,
+html.sx caption,
+html.sx legend {
+  font-family: var(--sx-display) !important;
+  color: var(--sx-ink);
+  letter-spacing: -0.015em;
+}
+
+html.sx ::selection { background: var(--sx-accent); color: var(--sx-on-accent); }
+
+/* Stud.IP uses near-black placeholders that vanish on dark surfaces */
+html.sx ::placeholder { color: var(--sx-ink-3) !important; opacity: 1 !important; }
+
+html.sx *:focus-visible {
+  outline: 2px solid var(--sx-accent) !important;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+html.sx ::-webkit-scrollbar { width: 11px; height: 11px; }
+html.sx ::-webkit-scrollbar-thumb {
+  background: var(--sx-line-strong);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+html.sx ::-webkit-scrollbar-thumb:hover { background-color: var(--sx-ink-3); }
+html.sx ::-webkit-scrollbar-track { background: transparent; }
+
+/* Inline Stud.IP SVG icons use currentColor, so we recolor them by role */
+html.sx .studip-icon.icon-role-clickable,
+html.sx .icon-role-clickable { color: var(--sx-accent-text) !important; }
+html.sx .studip-icon.icon-role-info { color: var(--sx-ink-2) !important; }
+html.sx .studip-icon.icon-role-inactive { color: var(--sx-ink-3) !important; }
+html.sx .studip-icon.icon-role-attention,
+html.sx .studip-icon.icon-role-new { color: var(--sx-bad) !important; }
+html.sx .studip-icon.icon-role-status-green,
+html.sx .studip-icon.icon-role-accept { color: var(--sx-good) !important; }
+html.sx .studip-icon.icon-role-status-yellow { color: var(--sx-warn) !important; }
+html.sx .studip-icon.icon-role-status-red { color: var(--sx-bad) !important; }
+
+/* ---------- Header -------------------------------------------------------- */
+
+html.sx #main-header {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 50;
+}
+
+html.sx #top-bar {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  border: 0 !important;
+  height: auto !important;
+  min-height: 52px;
+  padding: 10px 20px 0 !important;
+  align-items: center;
+}
+
+html.sx #site-title,
+html.sx #site-title a {
+  color: var(--sx-ink) !important;
+  font-family: var(--sx-display) !important;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+/* Brand: app.js swaps the plain title for the Stud.IP signet plus a two line wordmark */
+html.sx #site-title::before { display: none !important; }
+html.sx #site-title:has(.sx-brand) { display: flex !important; align-items: center; }
+html.sx .sx-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none !important;
+}
+html.sx .sx-brand-mark {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(140deg, var(--sx-accent), color-mix(in oklab, var(--sx-accent) 62%, #1b1530));
+  box-shadow: 0 6px 16px -6px var(--sx-accent), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.25s cubic-bezier(.3, 1.6, .5, 1);
+}
+html.sx .sx-brand-mark::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  background: var(--sx-on-accent);
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/favicon.svg") center / contain no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/favicon.svg") center / contain no-repeat;
+}
+html.sx .sx-brand:hover .sx-brand-mark { transform: rotate(-8deg) scale(1.06); }
+html.sx .sx-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+html.sx .sx-brand-text b {
+  font: 750 16px/1.1 var(--sx-display);
+  letter-spacing: -0.02em;
+  color: var(--sx-ink);
+}
+html.sx .sx-brand-text small {
+  font: 500 11.5px/1.2 var(--sx-font);
+  color: var(--sx-ink-3);
+  letter-spacing: 0.01em;
+  margin-top: 2px;
+}
+html:not(.sx) .sx-brand-mark { display: none; }
+
+html.sx #header-links > ul > li > a,
+html.sx #header-links a {
+  color: var(--sx-ink-2) !important;
+}
+html.sx #header-links > ul > li > a:hover { color: var(--sx-ink) !important; }
+html.sx #header-links .studip-icon { color: currentColor !important; }
+
+/* Webmail and StudIP management links: chips that match the search field and the bell */
+html.sx #header-links li.uol-nav-link { display: flex; align-items: center; }
+html.sx #header-links #webmail-link,
+html.sx #header-links #stums-link {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  box-sizing: border-box;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--sx-surface-2) !important;
+  border: 1px solid var(--sx-line);
+  color: var(--sx-ink-2) !important;
+  text-decoration: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+}
+html.sx #header-links #webmail-link {
+  width: 34px;
+  padding: 0 !important;
+  background-image: none !important;
+  font-size: 0 !important;
+  color: transparent !important;
+}
+html.sx #header-links #stums-link {
+  gap: 8px;
+  padding: 0 14px 0 12px !important;
+  font: 500 13px/1 var(--sx-font) !important;
+  white-space: nowrap;
+}
+html.sx #header-links #webmail-link::before,
+html.sx #header-links #stums-link::before,
+html.sx #header-links #stums-link::after {
+  content: "";
+  flex: none;
+  background: var(--sx-ink-2);
+  -webkit-mask: var(--sx-chip-icon) center / contain no-repeat;
+  mask: var(--sx-chip-icon) center / contain no-repeat;
+  transition: background 0.15s;
+}
+html.sx #header-links #webmail-link::before {
+  --sx-chip-icon: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/mail.svg");
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 17px;
+  height: 17px;
+}
+html.sx #header-links #stums-link::before { --sx-chip-icon: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/doctoral_cap.svg"); width: 16px; height: 16px; background: var(--sx-accent-text); }
+html.sx #header-links #stums-link::after { --sx-chip-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4 2.5h5.5V8M9.2 2.8 2.5 9.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); width: 10px; height: 10px; opacity: 0.7; }
+html.sx #header-links #webmail-link:hover,
+html.sx #header-links #stums-link:hover,
+html.sx #header-links #webmail-link:focus-visible,
+html.sx #header-links #stums-link:focus-visible {
+  background-color: var(--sx-surface-3) !important;
+  border-color: var(--sx-line-strong);
+  color: var(--sx-ink) !important;
+  transform: translateY(-1px);
+}
+html.sx #header-links #webmail-link:hover { color: transparent !important; }
+html.sx #header-links #webmail-link:hover::before,
+html.sx #header-links #stums-link:hover::after { background: var(--sx-accent-text); opacity: 1; }
+
+/* Icon links render white background-images made for the old blue bar */
+html.sx:not(.sx-dark) #header-links #uol-logout-link { filter: invert(1) brightness(0.35); }
+html.sx #header-links #uol-logout-link,
+html.sx #header-links .language-switch > a {
+  opacity: 0.75;
+  transition: opacity 0.15s, transform 0.15s;
+}
+html.sx #header-links #uol-logout-link:hover,
+html.sx #header-links .language-switch > a:hover { opacity: 1; transform: translateY(-1px); }
+
+/* Notification bell */
+html.sx #notification_marker {
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink-2) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 999px !important;
+  font: 700 12px/1 var(--sx-font) !important;
+}
+html.sx #notification_marker .studip-icon,
+html.sx #notification_marker svg { color: currentColor !important; fill: currentColor; }
+html.sx #notification_marker:not([disabled]) {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border-color: transparent !important;
+}
+
+/* Global search pill */
+html.sx #globalsearch-searchbar {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: 999px !important;
+  box-shadow: var(--sx-shadow);
+  overflow: hidden;
+}
+html.sx #globalsearch-searchbar {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  height: 38px !important;
+  padding: 0 12px 0 4px !important;
+  box-sizing: border-box;
+  overflow: visible !important;
+  /* Stud.IP widens the bar from 220px to 400px on focus, which pushed the dock
+     sideways. The list item now reserves a fixed slot and the bar expands
+     leftwards on top of it, so the header layout never shifts. */
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  z-index: 1001;
+  transition: width 0.22s cubic-bezier(.2, .8, .2, 1), border-color 0.15s, box-shadow 0.15s !important;
+}
+html.sx #quicksearch_item {
+  position: relative !important;
+  width: 270px !important;
+  min-width: 270px;
+  height: 38px;
+  flex: none !important;
+}
+html.sx #globalsearch-searchbar.is-visible,
+html.sx #globalsearch-searchbar:focus-within { width: 460px !important; }
+html.sx #globalsearch-searchbar:focus-within {
+  border-color: var(--sx-accent) !important;
+  box-shadow: 0 0 0 4px var(--sx-accent-soft) !important;
+}
+html.sx #globalsearch-input,
+html.sx #globalsearch-searchbar input {
+  flex: 1;
+  min-width: 0;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font: 500 13.5px/1 var(--sx-font) !important;
+}
+html.sx #globalsearch-searchbar input::placeholder { color: var(--sx-ink-3); }
+html.sx #globalsearch-clear,
+html.sx #globalsearch-icon {
+  flex: none;
+  color: var(--sx-ink-2) !important;
+}
+html.sx #globalsearch-clear:hover,
+html.sx #globalsearch-icon:hover { color: var(--sx-ink) !important; }
+html.sx #globalsearch-clear .studip-icon,
+html.sx #globalsearch-icon .studip-icon,
+html.sx #globalsearch-clear svg,
+html.sx #globalsearch-icon svg { color: currentColor !important; }
+html.sx #globalsearch-list {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+  z-index: 1000;
+  padding: 10px 14px !important;
+  max-height: min(70vh, 640px);
+  overflow-y: auto;
+}
+html.sx #globalsearch-list a,
+html.sx #globalsearch-list .studip-icon { color: var(--sx-ink-2) !important; }
+
+/* Hints */
+html.sx #globalsearch-togglehints { font-weight: 600; font-size: 12.5px; text-decoration: none !important; }
+html.sx #globalsearch-hints,
+html.sx #globalsearch-hints section,
+html.sx #globalsearch-hints p { color: var(--sx-ink-2) !important; font-size: 12.5px; line-height: 1.5; }
+html.sx #globalsearch-hints header {
+  color: var(--sx-ink) !important;
+  font: 700 12.5px/1.3 var(--sx-font) !important;
+  margin-top: 10px;
+}
+html.sx #globalsearch-searching { color: var(--sx-ink-3) !important; }
+
+/* Result groups */
+html.sx #globalsearch-results > article {
+  background: transparent !important;
+  border: 0 !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+}
+html.sx #globalsearch-results > article > header {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 4px 8px 6px !important;
+  color: var(--sx-ink-3) !important;
+  font: 700 10.5px/1 var(--sx-font) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+html.sx #globalsearch-results > article > header * {
+  color: var(--sx-ink-3) !important;
+  font: inherit !important;
+  text-decoration: none !important;
+}
+html.sx #globalsearch-results > article > header a:hover { color: var(--sx-accent-text) !important; }
+html.sx #globalsearch-results > article > a {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 8px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  text-decoration: none !important;
+  transition: background 0.1s;
+}
+html.sx #globalsearch-results > article > a:hover,
+html.sx #globalsearch-results > article > a:focus,
+html.sx #globalsearch-results > article > a.selected {
+  background: var(--sx-surface-3) !important;
+  outline: none !important;
+}
+html.sx #globalsearch-results > article > a:hover *,
+html.sx #globalsearch-results > article > a:focus * { background-color: transparent; }
+html.sx #globalsearch-results .globalsearch-result-img img {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 9px !important;
+  object-fit: cover;
+}
+html.sx #globalsearch-results .globalsearch-result-data { min-width: 0; flex: 1; }
+html.sx #globalsearch-results .globalsearch-result-title {
+  color: var(--sx-ink) !important;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+html.sx #globalsearch-results .globalsearch-result-details,
+html.sx #globalsearch-results .globalsearch-result-description,
+html.sx #globalsearch-results .globalsearch-result-details *:not(mark) {
+  color: var(--sx-ink-3) !important;
+  font-size: 12px;
+}
+html.sx #globalsearch-results .globalsearch-result-time {
+  color: var(--sx-ink-3) !important;
+  font: 500 11px/1 var(--sx-mono) !important;
+  white-space: nowrap;
+}
+html.sx #globalsearch-results mark,
+html.sx #globalsearch-results em,
+html.sx #globalsearch-results .highlight {
+  background: var(--sx-accent-soft) !important;
+  color: var(--sx-accent-text) !important;
+  font-style: normal;
+  font-weight: 700;
+  padding: 0 2px;
+  border-radius: 4px;
+}
+
+/* Avatar */
+html.sx #avatar-menu img,
+html.sx #avatar-wrapper img {
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 2px var(--sx-surface), 0 0 0 4px var(--sx-accent-line);
+}
+
+/* Main navigation becomes a floating dock */
+html.sx #navigation-level-1 {
+  background: transparent !important;
+  border: 0 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px 4px !important;
+  position: relative;
+}
+
+html.sx #navigation-level-1-items {
+  display: flex !important;
+  gap: 4px !important;
+  align-items: center !important;
+  padding: 6px 8px !important;
+  margin: 0 auto !important;
+  background: var(--sx-glass) !important;
+  -webkit-backdrop-filter: saturate(170%) blur(18px);
+  backdrop-filter: saturate(170%) blur(18px);
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 22px;
+  box-shadow: var(--sx-shadow-lg);
+  height: auto !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  max-width: 100%;
+}
+
+/* Stud.IP sizes each item 64x55px; shrink to the button so spacing is even */
+html.sx #navigation-level-1-items > li {
+  position: relative;
+  border: 0 !important;
+  background: none !important;
+  margin: 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex: none !important;
+}
+/* Keep the empty "More…" overflow item hidden as Stud.IP intends */
+html.sx #navigation-level-1-items > li.overflow:not(:has(li)) { display: none !important; }
+
+html.sx #navigation-level-1-items > li > a,
+html.sx #navigation-level-1-items > li > button {
+  display: grid !important;
+  place-items: center;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  color: var(--sx-ink-2) !important;
+  background: transparent !important;
+  transition: transform 0.18s cubic-bezier(.3, 1.6, .5, 1), background 0.15s, color 0.15s;
+  transform-origin: 50% 100%;
+}
+
+html.sx #navigation-level-1-items > li > a:hover,
+html.sx #navigation-level-1-items > li > button:hover {
+  transform: translateY(-3px) scale(1.14);
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink) !important;
+}
+
+html.sx #navigation-level-1-items > li.active > a {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  box-shadow: 0 8px 20px -8px var(--sx-accent);
+}
+
+html.sx #navigation-level-1-items > li > a svg,
+html.sx #navigation-level-1-items > li > a img {
+  width: 22px !important;
+  height: 22px !important;
+  color: currentColor !important;
+  margin: 0 !important;
+}
+html.sx #navigation-level-1-items > li.active > a .studip-icon { color: var(--sx-on-accent) !important; }
+/* A second active item (see singleActiveDock in app.js) looks like a regular one */
+html.sx #navigation-level-1-items > li.active.sx-not-active > a {
+  background: transparent !important;
+  color: var(--sx-ink-2) !important;
+  box-shadow: none;
+}
+html.sx #navigation-level-1-items > li.active.sx-not-active > a:hover {
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx #navigation-level-1-items > li.active.sx-not-active > a .studip-icon { color: currentColor !important; }
+
+/* Stud.IP's own active underline indicator clashes with the dock */
+html.sx #navigation-level-1-items > li::before,
+html.sx #navigation-level-1-items > li::after,
+html.sx #navigation-level-1-items > li > a:not([data-badge])::before,
+html.sx #navigation-level-1-items > li > a::after {
+  display: none !important;
+}
+
+/* Labels appear as tooltips below the dock */
+html.sx #navigation-level-1-items .navtitle {
+  position: absolute !important;
+  top: calc(100% + 16px) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  margin: 0 !important;
+  transform: translate(-50%, -6px) scale(0.96);
+  white-space: nowrap !important;
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  font: 600 12.5px/1 var(--sx-font) !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-transform: none !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+  opacity: 0 !important;
+  visibility: visible !important;
+  pointer-events: none;
+  transition: opacity 0.14s ease, transform 0.18s cubic-bezier(.2, .9, .3, 1.3);
+  transition-delay: 0s;
+  z-index: 1000;
+  display: block !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+html.sx #navigation-level-1-items .navtitle::before {
+  /* arrow */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -5px;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  border-left: 1px solid var(--sx-line-strong);
+  border-top: 1px solid var(--sx-line-strong);
+  transform: translateX(-50%) rotate(45deg);
+}
+html.sx #navigation-level-1-items > li:hover .navtitle {
+  opacity: 1 !important;
+  transform: translate(-50%, 0) scale(1);
+  transition-delay: 0.12s;
+}
+
+/* Badges (unread counters) */
+/* Stud.IP positions the badge with left/bottom offsets meant for its 64px items;
+   pin it to the button's top-right corner instead */
+html.sx #navigation-level-1-items [data-badge]:not([data-badge="0"])::before,
+html.sx #navigation-level-1-items .badge {
+  position: absolute !important;
+  top: -5px !important;
+  right: -5px !important;
+  left: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  box-sizing: border-box !important;
+  width: auto !important;
+  min-width: 19px !important;
+  height: 19px !important;
+  padding: 0 5px !important;
+  background: var(--sx-bad) !important;
+  color: #fff !important;
+  border: 2px solid var(--sx-surface) !important;
+  border-radius: 999px !important;
+  font: 700 10px/15px var(--sx-font) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  z-index: 2;
+  pointer-events: none;
+}
+
+html.sx #top-logo,
+html.sx .clockip { display: none !important; }
+
+/* Level 2 navigation (tabs) */
+html.sx #current-page-structure {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 4px 20px 0 !important;
+  box-sizing: border-box !important;
+  max-width: 100%;
+}
+html.sx body { overflow-x: clip; }
+
+/* Stud.IP pins the top bar (body.fixed) when scrolling: give it a glass backdrop */
+html.sx body.fixed #top-bar {
+  background: var(--sx-glass) !important;
+  -webkit-backdrop-filter: saturate(170%) blur(18px);
+  backdrop-filter: saturate(170%) blur(18px);
+  border-bottom: 1px solid var(--sx-line) !important;
+  box-shadow: 0 10px 30px -20px rgba(0, 0, 0, 0.5);
+  padding: 8px 20px !important;
+  box-sizing: border-box;
+}
+html.sx #navigation-level-2,
+html.sx #navigation-level-2 .tabs_wrapper {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html.sx #tabs:not(:has(li)) { display: none !important; }
+html.sx #tabs {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px !important;
+  background: var(--sx-surface-3) !important;
+  border-radius: 14px;
+  border: 0 !important;
+  width: max-content;
+  max-width: 100%;
+}
+html.sx #tabs > li {
+  border: 0 !important;
+  background: none !important;
+  margin: 0 !important;
+}
+html.sx #tabs > li > a {
+  display: block;
+  padding: 7px 14px !important;
+  border-radius: 10px !important;
+  color: var(--sx-ink-2) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  transition: background 0.15s, color 0.15s;
+}
+html.sx #tabs > li > a:hover { color: var(--sx-ink) !important; background: color-mix(in oklab, var(--sx-surface) 60%, transparent) !important; }
+html.sx #tabs > li.current > a {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--sx-line);
+}
+html.sx #tabs > li::before,
+html.sx #tabs > li::after,
+html.sx #tabs > li > a::before,
+html.sx #tabs > li > a::after { display: none !important; }
+html.sx #tabs > li > a { border-bottom: 0 !important; box-shadow: none; }
+html.sx #tabs > li.current > a { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--sx-line) !important; }
+
+/* Course context title ("Lecture: ...") */
+html.sx #context-title {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--sx-ink) !important;
+  font-family: var(--sx-display) !important;
+  font-size: 24px !important;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  padding: 10px 2px 12px !important;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+html.sx #context-title img,
+html.sx #context-title .course-avatar-small,
+html.sx #context-title .avatar { border-radius: 10px !important; }
+html.sx #context-title em,
+html.sx #context-title i { color: var(--sx-ink-3); font-weight: 500; }
+
+/* Tabs row: tabs on the left, help + fullscreen grouped on the right */
+html.sx #navigation-level-2 .tabs_wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+html.sx #navigation-level-2 .helpbar-container,
+html.sx #non-responsive-toggle-fullscreen {
+  position: relative !important;
+  right: auto !important;
+  top: auto !important;
+  float: none !important;
+  flex: none;
+  width: 36px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  display: grid !important;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sx-surface-3);
+  border: 1px solid var(--sx-line);
+  transition: background 0.15s, transform 0.15s;
+}
+html.sx #navigation-level-2 .helpbar-container { margin-left: auto !important; order: 2; }
+html.sx #non-responsive-toggle-fullscreen { order: 3; }
+html.sx #navigation-level-2 .helpbar-container:hover,
+html.sx #non-responsive-toggle-fullscreen:hover { background: var(--sx-surface); transform: translateY(-1px); }
+html.sx #helpbar_icon,
+html.sx #fullscreen-on {
+  float: none !important;
+  position: static !important;
+  display: grid !important;
+  place-items: center;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: var(--sx-ink-2) !important;
+}
+html.sx #helpbar_icon svg,
+html.sx #fullscreen-on svg,
+html.sx #helpbar_icon img,
+html.sx #fullscreen-on img { width: 18px !important; height: 18px !important; }
+html.sx #helpbar_icon .studip-icon,
+html.sx #fullscreen-on .studip-icon { color: var(--sx-ink-2) !important; }
+html.sx #helpbar_icon:hover .studip-icon,
+html.sx #fullscreen-on:hover .studip-icon { color: var(--sx-ink) !important; }
+
+/* Help popover */
+html.sx #helpbar-content,
+html.sx .helpbar {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+}
+html.sx .helpbar a { color: var(--sx-accent-text) !important; }
+
+/* ---------- Layout -------------------------------------------------------- */
+
+html.sx #sidebar {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 14px 0 20px 20px !important;
+  transition: opacity 0.2s, transform 0.25s;
+}
+
+html.sx #content-wrapper {
+  background: transparent !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 14px 20px 40px !important;
+}
+
+html.sx #content {
+  background: transparent !important;
+  color: var(--sx-ink);
+}
+
+/* Collapsible sidebar ("rail") */
+html.sx.sx-rail body { grid-template-columns: 0 minmax(0, 1fr) !important; }
+html.sx.sx-rail #sidebar {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+  overflow: hidden;
+  padding: 0 !important;
+  width: 0 !important;
+}
+
+/* Sidebar widgets as stacked cards */
+html.sx .sidebar-title {
+  font-family: var(--sx-display) !important;
+  font-size: 20px !important;
+  font-weight: 700;
+  color: var(--sx-ink) !important;
+  background: transparent !important;
+  border: 0 !important;
+  padding: 4px 4px 12px !important;
+  letter-spacing: -0.02em;
+}
+
+html.sx .sidebar-widget {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  margin: 0 0 12px !important;
+  overflow: hidden;
+}
+
+html.sx .sidebar-widget-header {
+  background: transparent !important;
+  color: var(--sx-ink-3) !important;
+  border: 0 !important;
+  font: 700 11px/1 var(--sx-font) !important;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 14px 16px 6px !important;
+}
+
+html.sx .sidebar-widget-content {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 4px 8px 10px !important;
+  color: var(--sx-ink);
+}
+
+html.sx .widget-list.widget-links > li,
+html.sx .sidebar-widget .widget-links li {
+  background: none !important;
+  border: 0 !important;
+  margin: 1px 0 !important;
+  padding: 0 !important;
+}
+html.sx .widget-links li > a,
+html.sx .widget-links li > button,
+html.sx .widget-links li > label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px !important;
+  border-radius: 10px;
+  color: var(--sx-ink) !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: background 0.12s;
+}
+html.sx .widget-links li > a:hover,
+html.sx .widget-links li > button:hover { background: var(--sx-surface-3) !important; }
+
+html.sx .widget-links li.active > a,
+html.sx .sidebar-navigation li.active > a {
+  background: var(--sx-accent-soft) !important;
+  color: var(--sx-accent-text) !important;
+  font-weight: 650;
+  box-shadow: inset 3px 0 0 var(--sx-accent);
+}
+html.sx .widget-links li::before,
+html.sx .sidebar-navigation li.active::before { display: none !important; }
+html.sx .widget-links li > a { background-image: none !important; }
+
+/* ---------- Generic surfaces --------------------------------------------- */
+
+html.sx .studip-widget,
+html.sx section.contentbox:not(.studip-widget section),
+html.sx article.studip:not(.toggle):not(.studip-widget article),
+html.sx form.default fieldset,
+html.sx table.default,
+html.sx .content-box,
+html.sx .ui-widget-content.studip-widget {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow) !important;
+  color: var(--sx-ink);
+}
+
+/* Start page widgets */
+html.sx .start-widgetcontainer { gap: var(--sx-gap); }
+html.sx .portal-widget-list { gap: var(--sx-gap); }
+html.sx .studip-widget-wrapper {
+  margin-bottom: var(--sx-gap) !important;
+  border: 0 !important;
+  background: none !important;
+}
+html.sx .studip-widget {
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+html.sx .studip-widget:hover { box-shadow: var(--sx-shadow-lg) !important; }
+
+html.sx .studip-widget .widget-header,
+html.sx .ui-widget_head {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  padding: 14px var(--sx-pad) !important;
+  color: var(--sx-ink) !important;
+  display: flex !important;
+  align-items: center;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  min-height: 0 !important;
+  height: auto !important;
+}
+html.sx .studip-widget .widget-title {
+  font-family: var(--sx-display) !important;
+  font-weight: 700 !important;
+  font-size: 17px !important;
+  letter-spacing: -0.015em;
+  color: var(--sx-ink) !important;
+}
+html.sx .studip-widget .header-options { opacity: 0.25; transition: opacity 0.15s; float: none !important; }
+html.sx .studip-widget:hover .header-options { opacity: 1; }
+html.sx .studip-widget .header-options .studip-icon { color: var(--sx-ink-3) !important; }
+
+html.sx .studip-widget > div:not(.widget-header) {
+  background: transparent !important;
+  color: var(--sx-ink);
+}
+
+/* News articles inside widgets */
+html.sx article.studip,
+html.sx article.studip.toggle {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+html.sx article.studip > header,
+html.sx article.studip.toggle > header {
+  background: transparent !important;
+  border: 0 !important;
+  padding: var(--sx-row) var(--sx-pad) !important;
+  color: var(--sx-ink);
+  transition: background 0.12s;
+}
+html.sx article.studip.toggle > header:hover { background: var(--sx-surface-2) !important; }
+html.sx article.studip > header h1,
+html.sx article.studip > header h1 a {
+  font-family: var(--sx-font) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--sx-ink) !important;
+  text-decoration: none !important;
+  letter-spacing: 0;
+}
+html.sx article.studip.new > header h1 a::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--sx-accent);
+  box-shadow: 0 0 0 3px var(--sx-accent-soft);
+  vertical-align: 1px;
+}
+html.sx article.studip > section,
+html.sx article.studip .formatted-content {
+  color: var(--sx-ink);
+  padding: 4px var(--sx-pad) 14px !important;
+  background: transparent !important;
+}
+html.sx .news_date,
+html.sx .news_visits {
+  font-family: var(--sx-mono) !important;
+  font-size: 11px !important;
+  color: var(--sx-ink-3) !important;
+  background: var(--sx-surface-3) !important;
+  padding: 3px 7px !important;
+  border-radius: 6px;
+  border: 0 !important;
+}
+html.sx section.no-entries {
+  padding: 22px var(--sx-pad) !important;
+  color: var(--sx-ink-3) !important;
+  font-style: normal;
+  text-align: center;
+}
+html.sx section.no-entries::before {
+  content: "\2728";
+  display: block;
+  font-size: 22px;
+  margin-bottom: 6px;
+  opacity: 0.7;
+}
+
+/* Inside a widget, wrapper articles/contentboxes must not become a second card */
+html.sx .studip-widget article.studip:not(.toggle),
+html.sx .studip-widget section.contentbox {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+html.sx .studip-widget article.studip:not(.toggle) > header {
+  padding: 10px var(--sx-pad) !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+}
+html.sx .studip-widget article.studip > header h1 { padding: 0 !important; margin: 0 !important; }
+html.sx .studip-widget article.studip:not(.mensa-widget) > footer,
+html.sx .studip-widget section.contentbox > footer {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 12px var(--sx-pad) !important;
+  margin: 0 !important;
+  font-size: 13px;
+}
+
+/* Stud.IP gives headers -10px margins to cancel the article padding we removed */
+html.sx .studip-widget article.studip > header { margin: 0 !important; }
+
+/* Plain text messages directly inside a widget body ("no announcements") */
+html.sx .studip-widget [id^="wid"]:not(.widget-header):not([id^="widget-"]) > span:not(.widget-title),
+html.sx .studip-widget [id^="wid"]:not(.widget-header):not([id^="widget-"]) > p {
+  display: block;
+  padding: 22px var(--sx-pad) !important;
+  margin: 0 !important;
+  color: var(--sx-ink-3) !important;
+  text-align: center;
+}
+
+/* News rows: compact, single line meta on the right */
+html.sx .studip-widget article.studip.toggle { padding: 0 !important; }
+html.sx .studip-widget article.studip.toggle > header {
+  display: flex !important;
+  align-items: center;
+  gap: 14px;
+  padding: 12px var(--sx-pad) !important;
+  min-height: 0 !important;
+  border-radius: 0 !important;
+}
+html.sx .studip-widget article.studip.toggle > header h1 {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+html.sx .studip-widget article.studip.toggle > header h1 a {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 0 !important;
+}
+html.sx .studip-widget article.studip.toggle > header h1 a > svg,
+html.sx .studip-widget article.studip.toggle > header h1 a > img { flex: none; }
+html.sx .studip-widget article.studip.toggle > header nav {
+  flex: none;
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none !important;
+}
+html.sx .studip-widget article.studip > header nav .news_user,
+html.sx article.studip > header nav a {
+  color: var(--sx-ink-2) !important;
+  border: 0 !important;
+  padding: 0 6px 0 0 !important;
+  margin: 0 !important;
+  font-size: 12.5px;
+  font-weight: 500;
+  text-decoration: none !important;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html.sx article.studip > header nav a:hover { color: var(--sx-accent-text) !important; }
+html.sx article.studip > header nav .news_date,
+html.sx article.studip > header nav .news_visits { margin: 0 !important; }
+html.sx .studip-widget article.studip.toggle.open > header { background: var(--sx-surface-2) !important; }
+
+/* Notice board (Schwarzes Brett) */
+html.sx .schwarzesbrett-widget > section { padding: 6px 8px 10px !important; }
+html.sx ul.sb-articles {
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  column-count: auto !important;
+  column-width: auto !important;
+  display: block !important;
+  overflow-x: hidden !important;
+  max-height: 460px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+html.sx ul.sb-articles > li.article {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin: 0 !important;
+  padding: 8px 10px 8px 22px !important;
+  border: 0 !important;
+  border-radius: 10px;
+  background: transparent !important;
+  position: relative;
+  transition: background 0.12s;
+}
+html.sx ul.sb-articles > li.article::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--sx-line-strong);
+}
+html.sx ul.sb-articles > li.article.unseen::before {
+  background: var(--sx-accent);
+  box-shadow: 0 0 0 3px var(--sx-accent-soft);
+}
+html.sx ul.sb-articles > li.article:hover { background: var(--sx-surface-2) !important; }
+html.sx ul.sb-articles > li.article > a:first-child {
+  flex: 1;
+  min-width: 0;
+  color: var(--sx-ink) !important;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+}
+html.sx ul.sb-articles > li.article.unseen > a:first-child { font-weight: 650; }
+html.sx ul.sb-articles > li.article > a:first-child:hover { color: var(--sx-accent-text) !important; }
+html.sx ul.sb-articles > li.article > a + a {
+  display: inline-block !important;
+  flex: none;
+  max-width: 38%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 3px 8px !important;
+  border-radius: 999px;
+  border: 1px solid var(--sx-line) !important;
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink-3) !important;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+html.sx ul.sb-articles > li.article > a + a:hover { color: var(--sx-ink) !important; }
+
+/* Empty article shells (widgets without news) */
+html.sx article.studip:not(:has(*)) { display: none !important; }
+
+/* Mensa widget: location switcher + counters as tidy menu cards */
+html.sx .mensa-widget > footer {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 12px var(--sx-pad) 4px !important;
+}
+html.sx .mensa-widget > footer > ul {
+  display: flex !important;
+  gap: 4px;
+  margin: 0 !important;
+  padding: 4px !important;
+  border: 0 !important;
+  border-radius: 12px;
+  background: var(--sx-surface-3) !important;
+  list-style: none;
+}
+html.sx .mensa-widget > footer > ul > li {
+  flex: 1;
+  border: 0 !important;
+  background: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center;
+}
+html.sx .mensa-widget > footer > ul > li::before,
+html.sx .mensa-widget > footer > ul > li::after,
+html.sx .mensa-widget > footer > ul > li > a::after { display: none !important; }
+html.sx .mensa-widget > footer > ul > li > a {
+  display: block;
+  padding: 8px 10px !important;
+  border-radius: 9px;
+  color: var(--sx-ink-2) !important;
+  font: 600 13px/1.2 var(--sx-font) !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+html.sx .mensa-widget > footer > ul > li > a:hover { color: var(--sx-ink) !important; }
+html.sx .mensa-widget > footer > ul > li.current > a {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--sx-line);
+}
+
+html.sx .mensa-widget > section {
+  padding: 6px var(--sx-pad) 14px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+html.sx .mensa-widget table.default {
+  border: 1px solid var(--sx-line) !important;
+  box-shadow: none !important;
+  border-radius: 14px !important;
+  margin: 0 !important;
+  background: var(--sx-surface-2) !important;
+  width: 100%;
+}
+html.sx .mensa-widget table.default > thead > tr > th {
+  background: transparent !important;
+  color: var(--sx-accent-text) !important;
+  font: 750 10.5px/1 var(--sx-font) !important;
+  letter-spacing: 0.12em;
+  padding: 12px 14px 6px !important;
+  border: 0 !important;
+}
+html.sx .mensa-widget table.default > thead > tr > th::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--sx-accent);
+  vertical-align: 1px;
+}
+html.sx .mensa-widget table.default > tbody > tr > td {
+  padding: 9px 14px !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--sx-ink) !important;
+  background: transparent !important;
+}
+html.sx .mensa-widget table.default > tbody > tr:last-child > td { border-bottom: 0 !important; }
+html.sx .mensa-widget table.default > tbody > tr:hover > td { background: var(--sx-surface-3) !important; }
+html.sx .mensa-widget table.default > tbody > tr > td:last-child {
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+  font: 650 13px/1.4 var(--sx-mono) !important;
+  color: var(--sx-ink) !important;
+}
+
+/* Allergen/diet codes become small readable chips; commas are hidden */
+html.sx .mensa-widget .attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 0 !important;
+  vertical-align: baseline !important;
+  position: static !important;
+  top: auto !important;
+}
+html.sx .mensa-widget .attributes abbr {
+  font: 600 10.5px/1 var(--sx-mono) !important;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--sx-surface-3);
+  border: 1px solid var(--sx-line);
+  color: var(--sx-ink-2) !important;
+  text-decoration: none !important;
+  cursor: help;
+}
+html.sx .mensa-widget .attributes abbr[title="vegan"],
+html.sx .mensa-widget .attributes abbr[title^="vegetarisch"],
+html.sx .mensa-widget .attributes abbr[title^="Vegetarisch"] {
+  background: color-mix(in oklab, var(--sx-good) 18%, transparent);
+  border-color: color-mix(in oklab, var(--sx-good) 40%, transparent);
+  color: var(--sx-good) !important;
+}
+html.sx.sx-dark .mensa-widget .attributes abbr[title="vegan"],
+html.sx.sx-dark .mensa-widget .attributes abbr[title^="vegetarisch"],
+html.sx.sx-dark .mensa-widget .attributes abbr[title^="Vegetarisch"] { color: #5fe0a8 !important; }
+
+/* ---------- Tables -------------------------------------------------------- */
+
+html.sx table.default {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  overflow: hidden;
+  margin-bottom: var(--sx-gap) !important;
+}
+html.sx table.default > caption {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  font-size: 22px !important;
+  font-weight: 750 !important;
+  text-align: left;
+  padding: 6px 2px 14px !important;
+  border: 0 !important;
+  caption-side: top;
+}
+html.sx table.default > caption .actions .studip-icon { color: var(--sx-ink-2) !important; }
+html.sx table.default > tfoot > tr > td {
+  background: var(--sx-surface-2) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--sx-line) !important;
+  padding: 10px 12px !important;
+  color: var(--sx-ink-2);
+}
+html.sx table.default > thead > tr > th,
+html.sx table.default > tbody > tr > th {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink-3) !important;
+  font: 700 11px/1.3 var(--sx-font) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  padding: 11px 12px !important;
+}
+html.sx table.default > thead > tr > th a { color: var(--sx-ink-2) !important; text-decoration: none; }
+html.sx table.default > tbody > tr > td {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  padding: var(--sx-row) 12px !important;
+  color: var(--sx-ink);
+  vertical-align: middle;
+}
+html.sx table.default > tbody > tr:last-child > td { border-bottom: 0 !important; }
+html.sx table.default > tbody > tr { background: transparent !important; transition: background 0.1s; }
+html.sx table.default > tbody > tr:hover > td { background: var(--sx-surface-2) !important; }
+html.sx table.default > tbody > tr.selected > td { background: var(--sx-accent-soft) !important; }
+html.sx table.default > tbody.collapsed > tr > th,
+html.sx table.default > tbody > tr.header-row > th {
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink) !important;
+  text-transform: none;
+  font-size: 13px !important;
+  letter-spacing: 0;
+}
+
+/* My courses: draw the color group as a slim bar (the generic row rules would wipe the cell background) */
+html.sx table.mycourses > tbody > tr > td.gruppe0 { --sx-group: var(--group-color-0); }
+html.sx table.mycourses > tbody > tr > td.gruppe1 { --sx-group: var(--group-color-1); }
+html.sx table.mycourses > tbody > tr > td.gruppe2 { --sx-group: var(--group-color-2); }
+html.sx table.mycourses > tbody > tr > td.gruppe3 { --sx-group: var(--group-color-3); }
+html.sx table.mycourses > tbody > tr > td.gruppe4 { --sx-group: var(--group-color-4); }
+html.sx table.mycourses > tbody > tr > td.gruppe5 { --sx-group: var(--group-color-5); }
+html.sx table.mycourses > tbody > tr > td.gruppe6 { --sx-group: var(--group-color-6); }
+html.sx table.mycourses > tbody > tr > td.gruppe7 { --sx-group: var(--group-color-7); }
+html.sx table.mycourses > tbody > tr > td.gruppe8 { --sx-group: var(--group-color-8); }
+html.sx table.mycourses > tbody > tr > td[class^="gruppe"],
+html.sx table.mycourses > tbody > tr:hover > td[class^="gruppe"] {
+  background: linear-gradient(var(--sx-group), var(--sx-group)) 10px 50% / 5px calc(100% - 18px) no-repeat !important;
+  width: 18px !important;
+  min-width: 18px !important;
+  padding: 0 !important;
+}
+html.sx table.mycourses td:nth-child(3) {
+  font-family: var(--sx-mono) !important;
+  font-size: 12px;
+  color: var(--sx-ink-3) !important;
+  white-space: nowrap;
+}
+html.sx table.mycourses > tbody > tr > td:nth-child(4) a:not(.button) {
+  color: var(--sx-ink) !important;
+  font: 600 15.5px/1.3 var(--sx-display) !important;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+html.sx table.mycourses td:nth-child(4) a:hover { color: var(--sx-accent-text) !important; }
+html.sx .my-courses-avatar,
+html.sx .course-avatar-small { border-radius: 8px !important; overflow: hidden; }
+html.sx .my-courses-navigation-item > a {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 7px;
+  transition: background 0.12s;
+}
+html.sx .my-courses-navigation-item > a:hover { background: var(--sx-surface-3); }
+/* Plain module icons stay quiet; only modules with new content take the accent */
+html.sx table.mycourses > tbody > tr > td li.my-courses-navigation-item > a .studip-icon { color: var(--sx-ink-3) !important; }
+html.sx table.mycourses > tbody > tr > td li.my-courses-navigation-item > a:hover .studip-icon { color: var(--sx-ink) !important; }
+/* Stud.IP frames modules with news in red; the accent pill and dot replace that frame */
+html.sx li.my-courses-navigation-important { border: 0 !important; border-radius: 7px; }
+html.sx li.my-courses-navigation-important > a .studip-icon { color: var(--sx-accent-text) !important; }
+html.sx .my-courses-navigation-important > a { background: var(--sx-accent-soft); }
+html.sx .my-courses-navigation-important > a:hover { background: color-mix(in oklab, var(--sx-accent) 24%, transparent); }
+html.sx table.mycourses > tbody > tr > td li.my-courses-navigation-important > a .studip-icon,
+html.sx table.mycourses > tbody > tr > td li.my-courses-navigation-important > a:hover .studip-icon { color: var(--sx-accent-text) !important; }
+html.sx .my-courses-navigation-important > a::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sx-accent);
+  box-shadow: 0 0 0 2px var(--sx-surface);
+}
+
+/* Links inside data tables stay calm; accent only on hover */
+html.sx table.default > tbody > tr > td a:not(.button) {
+  color: var(--sx-ink) !important;
+  text-decoration: none;
+}
+html.sx table.default > tbody > tr > td a:not(.button):hover {
+  color: var(--sx-accent-text) !important;
+  text-decoration: underline;
+}
+html.sx table.default > tbody > tr > td a .studip-icon.icon-role-clickable { color: var(--sx-accent-text) !important; }
+
+/* ---------- Forms & buttons ---------------------------------------------- */
+
+html.sx form.default fieldset {
+  padding: var(--sx-pad) !important;
+  margin-bottom: var(--sx-gap) !important;
+}
+html.sx form.default fieldset > legend {
+  background: transparent !important;
+  border: 0 !important;
+  font-size: 17px !important;
+  font-weight: 700;
+  padding: 0 4px !important;
+  margin: 0 0 6px !important;
+  color: var(--sx-ink) !important;
+}
+html.sx form.default label,
+html.sx label { color: var(--sx-ink); }
+
+html.sx input:not([type]),
+html.sx input[type="text"],
+html.sx input[type="search"],
+html.sx input[type="email"],
+html.sx input[type="number"],
+html.sx input[type="password"],
+html.sx input[type="date"],
+html.sx input[type="time"],
+html.sx input[type="url"],
+html.sx input[type="tel"],
+html.sx input[type="datetime-local"],
+html.sx textarea,
+html.sx select {
+  background-color: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: var(--sx-radius-sm) !important;
+  font-family: var(--sx-font) !important;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+html.sx input:not([type]),
+html.sx input[type="text"],
+html.sx input[type="search"],
+html.sx input[type="email"],
+html.sx input[type="number"],
+html.sx input[type="password"],
+html.sx select { min-height: 36px; padding: 6px 12px !important; }
+html.sx input:focus,
+html.sx textarea:focus,
+html.sx select:focus {
+  border-color: var(--sx-accent) !important;
+  box-shadow: 0 0 0 4px var(--sx-accent-soft) !important;
+  outline: none !important;
+}
+html.sx input[type="checkbox"],
+html.sx input[type="radio"] { accent-color: var(--sx-accent); }
+
+html.sx .button,
+html.sx button.button,
+html.sx a.button,
+html.sx input[type="submit"].button,
+html.sx .ui-dialog .ui-dialog-buttonpane button {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: 999px !important;
+  padding: 7px 16px !important;
+  font: 600 13px/1.3 var(--sx-font) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-decoration: none !important;
+  transition: transform 0.12s, background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  min-width: 0 !important;
+}
+html.sx .button:hover,
+html.sx .ui-dialog .ui-dialog-buttonpane button:hover {
+  border-color: var(--sx-ink-3) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.35);
+}
+html.sx .button:disabled,
+html.sx .button[disabled] {
+  opacity: 0.45;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+html.sx .button.accept,
+html.sx .ui-dialog .ui-dialog-buttonpane button.accept {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 20px -10px var(--sx-accent);
+}
+html.sx .button::before { filter: none; }
+html.sx .button.cancel { color: var(--sx-ink-2) !important; }
+
+/* ---------- Messageboxes -------------------------------------------------- */
+
+html.sx .messagebox {
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  background-color: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  box-shadow: var(--sx-shadow);
+  border-left-width: 5px !important;
+}
+html.sx .messagebox_info { border-left-color: var(--sx-info) !important; }
+html.sx .messagebox_info::before { background-color: var(--sx-accent-soft) !important; }
+html.sx .messagebox_info::after { background-color: var(--sx-accent-text) !important; }
+html.sx .messagebox_success { border-left-color: var(--sx-good) !important; }
+html.sx .messagebox_warning { border-left-color: var(--sx-warn) !important; }
+html.sx .messagebox_error,
+html.sx .messagebox_exception { border-left-color: var(--sx-bad) !important; }
+
+/* ---------- Dialogs, menus, misc ---------------------------------------- */
+
+html.sx .ui-dialog,
+html.sx .studip-dialog {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 22px !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+html.sx .ui-dialog .ui-dialog-titlebar {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  padding: 16px 20px !important;
+  font-family: var(--sx-display) !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+html.sx .ui-dialog .ui-dialog-content {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  padding: 18px 20px !important;
+}
+html.sx .ui-dialog .ui-dialog-buttonpane {
+  background: var(--sx-surface-2) !important;
+  border-top: 1px solid var(--sx-line) !important;
+  padding: 10px 16px !important;
+  margin: 0 !important;
+}
+html.sx .ui-widget-overlay {
+  background: rgba(8, 8, 14, 0.45) !important;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 1 !important;
+}
+
+html.sx .action-menu-content,
+html.sx .ui-menu,
+html.sx .ui-autocomplete,
+html.sx #avatar-menu .action-menu-content,
+html.sx #notification_list {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+  overflow: hidden;
+}
+html.sx .action-menu-content a,
+html.sx .action-menu-content button { color: var(--sx-ink) !important; }
+html.sx .action-menu-item:hover,
+html.sx .action-menu-content li:hover { background: var(--sx-surface-3) !important; }
+
+/* Menu titles ship black text that disappears on dark surfaces */
+html.sx .action-menu-content .action-menu-title {
+  color: var(--sx-ink-3) !important;
+  font: 700 11px/1.2 var(--sx-font) !important;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin: 0 !important;
+  padding: 6px 10px 8px !important;
+  height: auto !important;
+  border: 0 !important;
+}
+
+/* Profile menu: roomy rows, muted icons, logout separated at the bottom */
+html.sx #avatar-menu .action-menu-content { padding: 8px !important; min-width: 236px; }
+html.sx #avatar-menu .action-menu-list { margin: 0 !important; padding: 0 !important; }
+html.sx #avatar-menu .action-menu-item {
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 10px;
+  background: transparent !important;
+}
+html.sx #avatar-menu .action-menu-item:hover { background: transparent !important; }
+html.sx #avatar-menu .action-menu-item > a,
+html.sx #avatar-menu .action-menu-item > button {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px !important;
+  border: 0 !important;
+  border-radius: 10px;
+  background: transparent !important;
+  font: 500 14px/1.3 var(--sx-font) !important;
+  text-align: left;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+html.sx #avatar-menu .action-menu-item > a:hover,
+html.sx #avatar-menu .action-menu-item > button:hover { background: var(--sx-surface-3) !important; }
+html.sx #avatar-menu .action-menu-item > a > svg,
+html.sx #avatar-menu .action-menu-item > a > img,
+html.sx #avatar-menu .action-menu-item > button > svg,
+html.sx #avatar-menu .action-menu-item > button > img {
+  position: static !important;
+  flex: none;
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  color: var(--sx-ink-3) !important;
+  transition: color 0.12s;
+}
+html.sx #avatar-menu .action-menu-item > a:hover > svg,
+html.sx #avatar-menu .action-menu-item > button:hover > svg { color: var(--sx-accent-text) !important; }
+html.sx #avatar-menu .action-menu-item:last-child {
+  margin-top: 6px !important;
+  padding-top: 6px !important;
+  border-top: 1px solid var(--sx-line) !important;
+  border-radius: 0;
+}
+html.sx #avatar-menu .action-menu-item:last-child > a,
+html.sx #avatar-menu .action-menu-item:last-child > button { color: var(--sx-bad) !important; }
+html.sx #avatar-menu .action-menu-item:last-child > a > svg,
+html.sx #avatar-menu .action-menu-item:last-child > button > svg { color: currentColor !important; }
+
+/* Content boxes (course overview etc.) */
+html.sx section.contentbox { overflow: hidden; margin-bottom: var(--sx-gap) !important; }
+html.sx section.contentbox > header {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--sx-line) !important;
+  padding: 14px var(--sx-pad) !important;
+}
+html.sx section.contentbox > header h1,
+html.sx section.contentbox > header h2 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  color: var(--sx-ink) !important;
+  margin: 0 !important;
+}
+html.sx section.contentbox > section,
+html.sx section.contentbox > div,
+html.sx section.contentbox > article { padding-left: var(--sx-pad); padding-right: var(--sx-pad); }
+html.sx section.contentbox > section { padding-top: 10px; padding-bottom: 12px; }
+html.sx section.contentbox dl dt,
+html.sx section.contentbox h3 { color: var(--sx-ink-3); font: 700 11px/1.3 var(--sx-font) !important; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 10px; }
+
+/* File upload drop zone */
+html.sx .drag-and-drop-wrapper,
+html.sx .files-upload-dropzone,
+html.sx .dropzone {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink-2) !important;
+  border: 2px dashed var(--sx-line-strong) !important;
+  border-radius: var(--sx-radius-sm) !important;
+  transition: border-color 0.15s, background 0.15s;
+}
+html.sx .drag-and-drop-wrapper:hover,
+html.sx .drag-and-drop-wrapper.hovered {
+  border-color: var(--sx-accent) !important;
+  background: var(--sx-accent-soft) !important;
+}
+html.sx .drag-and-drop-wrapper * { color: inherit !important; }
+
+/* Global search dropdown */
+html.sx #globalsearch-list {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+}
+html.sx #globalsearch-list a { color: var(--sx-ink) !important; }
+
+html.sx .skiplink { background: var(--sx-surface) !important; color: var(--sx-ink) !important; }
+
+html.sx .contentbar {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  margin-bottom: var(--sx-gap) !important;
+}
+
+html.sx .pagination a,
+html.sx .pagination span,
+html.sx .pagination button {
+  border-radius: 9px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--sx-ink-2) !important;
+}
+html.sx .pagination .current,
+html.sx .pagination [aria-current] {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+}
+
+/* Scroll-to-top sits above Orbit's floating control bar instead of on top of it */
+html.sx #scroll-to-top {
+  right: 22px !important;
+  bottom: 108px !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: grid !important;
+  place-items: center;
+  background: var(--sx-glass) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--sx-line-strong) !important;
+  color: var(--sx-ink) !important;
+  border-radius: 50% !important;
+  box-shadow: var(--sx-shadow-lg);
+  z-index: 8999 !important;
+}
+html.sx #scroll-to-top.hide { display: none !important; }
+html.sx #scroll-to-top .studip-icon,
+html.sx #scroll-to-top svg { color: var(--sx-ink) !important; }
+@media (max-width: 767px) {
+  html.sx #scroll-to-top { right: 12px !important; bottom: 96px !important; }
+}
+
+/* Footer */
+html.sx #main-footer {
+  background: transparent !important;
+  color: var(--sx-ink-3) !important;
+  border-top: 1px solid var(--sx-line) !important;
+  font-size: 12px;
+}
+html.sx #main-footer a { color: var(--sx-ink-2) !important; text-decoration: none; }
+html.sx #main-footer a:hover { color: var(--sx-ink) !important; }
+
+/* ---------- Dark mode patches for content with hardcoded light colors ---- */
+
+html.sx.sx-dark #content [style*="background-color: #fff"],
+html.sx.sx-dark #content [style*="background-color: white"],
+html.sx.sx-dark #content [style*="background: #fff"],
+html.sx.sx-dark #content [style*="background:#fff"] {
+  background-color: var(--sx-surface) !important;
+}
+html.sx.sx-dark .formatted-content [style*="color: #000"],
+html.sx.sx-dark .formatted-content [style*="color:#000"],
+html.sx.sx-dark .formatted-content [style*="color: black"],
+html.sx.sx-dark .formatted-content [style*="color: rgb(0, 0, 0)"] {
+  color: var(--sx-ink) !important;
+}
+html.sx.sx-dark .formatted-content img,
+html.sx.sx-dark .formatted-content figure { filter: brightness(0.92); }
+/* Only the editor surface: .ck-content is also used for rendered text (chat, news) */
+html.sx.sx-dark .ck.ck-editor__main > .ck-editor__editable {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx.sx-dark .ck.ck-toolbar {
+  background: var(--sx-surface-2) !important;
+  border-color: var(--sx-line) !important;
+}
+html.sx.sx-dark .ck.ck-toolbar .ck-button { color: var(--sx-ink) !important; }
+html.sx.sx-dark code,
+html.sx.sx-dark pre { background: var(--sx-surface-3) !important; color: var(--sx-ink) !important; }
+html.sx.sx-dark hr { border-color: var(--sx-line) !important; }
+html.sx.sx-dark .quiet,
+html.sx.sx-dark .minor { color: var(--sx-ink-3) !important; }
+html.sx.sx-dark .ui-widget-content { color: var(--sx-ink); }
+html.sx.sx-dark .ui-state-default,
+html.sx.sx-dark .ui-widget-content .ui-state-default {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink) !important;
+  border-color: var(--sx-line) !important;
+}
+html.sx.sx-dark .ui-state-active,
+html.sx.sx-dark .ui-widget-content .ui-state-active {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+}
+
+/* ---------- Calendars (FullCalendar: Planner + Calendar) ----------------- */
+
+html.sx .fc {
+  font-family: var(--sx-font) !important;
+  color: var(--sx-ink);
+}
+html.sx .fc-view-container {
+  background: var(--sx-surface);
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+  box-shadow: var(--sx-shadow);
+  overflow: hidden;
+}
+html.sx .fc-view > table { border: 0 !important; }
+html.sx .fc-unthemed th,
+html.sx .fc-unthemed td,
+html.sx .fc-unthemed thead,
+html.sx .fc-unthemed tbody,
+html.sx .fc-unthemed .fc-divider,
+html.sx .fc-unthemed .fc-row,
+html.sx .fc-unthemed .fc-content,
+html.sx .fc-unthemed .fc-popover,
+html.sx .fc-unthemed .fc-list-view,
+html.sx .fc-unthemed .fc-list-heading td,
+html.sx .fc td,
+html.sx .fc th {
+  border-color: var(--sx-line) !important;
+}
+html.sx .fc-view > table > thead > tr > td,
+html.sx .fc-view > table > tbody > tr > td { border-left: 0 !important; border-right: 0 !important; }
+
+/* Header row with day names */
+html.sx .fc-unthemed thead,
+html.sx .fc-unthemed .fc-widget-header,
+html.sx .fc-head-container,
+html.sx .fc-head .fc-row,
+html.sx .fc-day-header,
+html.sx .fc th.fc-axis {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink-2) !important;
+}
+html.sx .fc-day-header {
+  padding: 10px 6px !important;
+  font: 700 11px/1.2 var(--sx-font) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html.sx .fc-day-header a { color: inherit !important; text-decoration: none; }
+html.sx .fc-day-header.fc-today { color: var(--sx-accent-text) !important; }
+html.sx .fc-day-header.fc-today a,
+html.sx .fc-day-header.fc-today span {
+  color: var(--sx-accent-text) !important;
+}
+
+/* Body cells */
+html.sx .fc-unthemed td.fc-today,
+html.sx .fc .fc-bg td.fc-today,
+html.sx .fc .fc-content-skeleton td.fc-today {
+  background: color-mix(in oklab, var(--sx-accent) 7%, transparent) !important;
+}
+html.sx .fc .fc-bg td,
+html.sx .fc .fc-slats td,
+html.sx .fc .fc-widget-content { background-color: transparent; }
+html.sx .fc .fc-past.fc-day:not(.fc-today) { background: transparent !important; }
+html.sx .fc .fc-other-month { opacity: 0.45; }
+html.sx .fc .fc-nonbusiness { background: var(--sx-surface-2) !important; opacity: 0.6; }
+html.sx .fc .fc-slats tr.fc-minor td { border-top-style: dashed !important; border-top-color: color-mix(in oklab, var(--sx-line) 60%, transparent) !important; }
+html.sx .fc .fc-slats .fc-axis,
+html.sx .fc .fc-axis {
+  background: transparent !important;
+  color: var(--sx-ink-3) !important;
+  font: 500 11px/1 var(--sx-mono) !important;
+  border-right: 1px solid var(--sx-line) !important;
+}
+html.sx .fc .fc-axis span,
+html.sx .fc .fc-time span { color: inherit; }
+html.sx .fc .fc-week-number {
+  background: transparent !important;
+  color: var(--sx-ink-3) !important;
+  font: 500 11px/1 var(--sx-mono) !important;
+}
+html.sx .fc .fc-day-number {
+  font: 600 12px/1 var(--sx-mono) !important;
+  color: var(--sx-ink-2) !important;
+  padding: 6px 8px !important;
+  text-decoration: none !important;
+}
+html.sx .fc td.fc-today .fc-day-number,
+html.sx .fc .fc-day-top.fc-today .fc-day-number {
+  display: inline-block;
+  min-width: 22px;
+  margin: 3px;
+  padding: 5px 6px !important;
+  border-radius: 999px;
+  text-align: center;
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+}
+html.sx .fc .fc-now-indicator { border-color: var(--sx-accent) !important; }
+html.sx .fc .fc-now-indicator-arrow { border-top-color: transparent !important; border-bottom-color: transparent !important; border-left-color: var(--sx-accent) !important; }
+html.sx .fc .fc-highlight { background: var(--sx-accent-soft) !important; opacity: 1; }
+
+/* Toolbar */
+html.sx .fc-toolbar { margin-bottom: 14px !important; gap: 10px; }
+html.sx .fc-toolbar h2 {
+  font: 750 24px/1.2 var(--sx-display) !important;
+  letter-spacing: -0.025em;
+  color: var(--sx-ink) !important;
+}
+html.sx .fc .fc-button-group {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--sx-surface-3);
+}
+html.sx .fc .fc-button,
+html.sx .fc .fc-button-primary {
+  background: transparent !important;
+  color: var(--sx-ink-2) !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  padding: 7px 14px !important;
+  font: 600 13px/1.2 var(--sx-font) !important;
+  text-transform: capitalize;
+  box-shadow: none !important;
+  opacity: 1;
+  transition: background 0.12s, color 0.12s;
+  min-height: 0 !important;
+  height: auto !important;
+}
+html.sx .fc .fc-toolbar > div > .fc-button { background: var(--sx-surface-3) !important; margin-right: 4px; }
+html.sx .fc .fc-button:hover { color: var(--sx-ink) !important; background: color-mix(in oklab, var(--sx-surface) 70%, transparent) !important; }
+html.sx .fc .fc-button.fc-button-active,
+html.sx .fc .fc-button-primary:not(:disabled).fc-button-active,
+html.sx .fc .fc-button-primary:not(:disabled):active {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18), 0 0 0 1px var(--sx-line) !important;
+}
+html.sx .fc .fc-toolbar > div > .fc-button.fc-button-active {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+}
+html.sx .fc .fc-button:disabled { opacity: 0.4; cursor: default; }
+html.sx .fc .fc-button .fc-icon {
+  color: currentColor !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  vertical-align: 0 !important;
+}
+html.sx .fc .fc-button .fc-icon::before { vertical-align: 0 !important; }
+/* Stud.IP gives every button a 100px min-width; arrows only need a square */
+html.sx .fc .fc-prev-button,
+html.sx .fc .fc-next-button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  flex: none !important;
+  width: 36px !important;
+  min-width: 0 !important;
+  height: 30px !important;
+  padding: 0 !important;
+}
+html.sx .fc .fc-button-group { align-items: center; }
+html.sx .fc .fc-toolbar > div { display: flex; align-items: center; gap: 4px; }
+html.sx .fc .fc-toolbar > div > * { margin-top: 0 !important; margin-bottom: 0 !important; }
+
+/* Events: neutral card, course color as left stripe + faint tint */
+html.sx .fc .fc-event {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink) !important;
+  border-style: solid !important;
+  border-width: 0 0 0 4px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 0 0 1px var(--sx-line) !important;
+  overflow: hidden;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+html.sx .fc .fc-event::before {
+  /* inherits the course border color and paints it as a 16% tint */
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 0 solid;
+  border-color: inherit;
+  border-left-width: 4000px;
+  opacity: 0.16;
+  pointer-events: none;
+}
+html.sx .fc .fc-day-grid-event { position: relative; z-index: 1; margin: 2px 5px !important; padding: 2px 6px !important; }
+html.sx .fc .fc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--sx-shadow-lg) !important;
+  z-index: 10 !important;
+}
+html.sx .fc .fc-event .fc-content,
+html.sx .fc .fc-event .fc-title,
+html.sx .fc .fc-event .fc-content > *:not(.fc-time) {
+  color: var(--sx-ink) !important;
+}
+html.sx .fc .fc-event .fc-title { font-weight: 600; }
+html.sx .fc .fc-time-grid-event .fc-content { padding: 4px 6px; }
+html.sx .fc .fc-time-grid-event .fc-time {
+  font: 600 10.5px/1.2 var(--sx-mono) !important;
+  margin: -4px -6px 4px !important;
+  padding: 4px 6px !important;
+  border-radius: 0;
+}
+html.sx .fc .fc-day-grid-event .fc-time {
+  font: 600 11px/1.2 var(--sx-mono) !important;
+  color: var(--sx-ink-2) !important;
+  background: transparent !important;
+}
+html.sx .fc .fc-event .studip-icon { color: currentColor !important; }
+html.sx .fc a.fc-more { color: var(--sx-accent-text) !important; font-weight: 600; }
+
+html.sx .fc-popover {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--sx-shadow-lg) !important;
+  overflow: hidden;
+}
+html.sx .fc-popover .fc-header { background: var(--sx-surface-2) !important; color: var(--sx-ink) !important; padding: 8px 10px !important; }
+
+/* Sidebar option widgets (radio/checkbox lists, e.g. planner size, filters) */
+html.sx #sidebar .widget-list > li,
+html.sx .widget-options > li {
+  background: transparent !important;
+  border: 0 !important;
+  margin: 1px 0 !important;
+  padding: 0 !important;
+}
+html.sx .widget-options > li > button,
+html.sx .widget-options > li > a {
+  all: unset;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px !important;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--sx-ink) !important;
+  background-image: none !important;
+  font: 500 14px/1.3 var(--sx-font) !important;
+  transition: background 0.12s;
+}
+html.sx .widget-options > li > button:hover,
+html.sx .widget-options > li > a:hover { background-color: var(--sx-surface-3) !important; }
+html.sx .widget-options > li > button:focus-visible { outline: 2px solid var(--sx-accent) !important; }
+html.sx .widget-options > li > :is(button, a) > svg,
+html.sx .widget-options > li > :is(button, a) > img { display: none !important; }
+
+/* Custom drawn radio / checkbox indicator */
+html.sx .widget-options > li > :is(button, a)::before {
+  content: "" !important;
+  flex: none;
+  display: block !important;
+  position: static !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin: 0 !important;
+  border: 2px solid var(--sx-line-strong);
+  border-radius: 6px;
+  background: var(--sx-surface) none !important;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+html.sx .widget-options > li > .options-radio::before { border-radius: 50%; }
+html.sx .widget-options > li > .options-checked::before {
+  border-color: var(--sx-accent);
+  background: var(--sx-accent) !important;
+}
+html.sx .widget-options > li > .options-radio.options-checked::before {
+  background: var(--sx-surface) !important;
+  box-shadow: inset 0 0 0 3px var(--sx-surface), inset 0 0 0 10px var(--sx-accent);
+}
+html.sx .widget-options > li > .options-checkbox.options-checked::before,
+html.sx .widget-options > li > .options-checked:not(.options-radio)::before {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px no-repeat,
+    var(--sx-accent) !important;
+}
+html.sx .widget-options > li > .options-checked { font-weight: 600 !important; }
+html.sx .widget-options > li > :is(button, a)::after { display: none !important; }
+
+/* Sidebar option lists (e.g. planner size radios) */
+html.sx #sidebar .widget-options,
+html.sx #sidebar .widget-list,
+html.sx #sidebar .sidebar-widget-content > ul,
+html.sx #sidebar .sidebar-widget-content > form,
+html.sx #sidebar .sidebar-widget-content fieldset {
+  background: transparent !important;
+  border: 0 !important;
+}
+html.sx #sidebar .sidebar-widget-content label,
+html.sx #sidebar .widget-options a { color: var(--sx-ink) !important; }
+
+/* ---------- Fieldsets in dialogs and plugin forms ------------------------ */
+
+html.sx .ui-dialog fieldset,
+html.sx form:not(.default) fieldset {
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius-sm) !important;
+  background: var(--sx-surface-2) !important;
+  padding: 12px 16px 14px !important;
+  margin: 0 0 14px !important;
+}
+html.sx .ui-dialog fieldset > legend,
+html.sx form:not(.default) fieldset > legend {
+  float: none;
+  padding: 0 6px !important;
+  margin-left: -4px;
+  font: 700 11px/1 var(--sx-font) !important;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--sx-ink-3) !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+html.sx .ui-dialog h3 {
+  font: 700 15px/1.3 var(--sx-display) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx .ui-dialog label { color: var(--sx-ink) !important; }
+html.sx .ui-dialog small { color: var(--sx-ink-3) !important; }
+
+/* Mensa settings: option groups */
+html.sx .mensa-widget-settings ul.thirds { gap: 10px; }
+html.sx .mensa-widget-settings ul.thirds > li {
+  background: transparent !important;
+  border-radius: 12px;
+  padding: 10px 12px !important;
+  transition: background 0.12s;
+}
+html.sx .mensa-widget-settings ul.thirds > li:hover { background: var(--sx-surface-3) !important; }
+html.sx .mensa-widget-settings ul.thirds > li:hover *,
+html.sx .mensa-widget-settings ul.thirds > li * { color: var(--sx-ink) !important; }
+html.sx .mensa-widget-settings ul.thirds > li small { color: var(--sx-ink-3) !important; }
+html.sx .mensa-widget-settings .type-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+html.sx .mensa-widget-settings .type-checkbox label { cursor: pointer; }
+html.sx .ui-dialog input[type="checkbox"],
+html.sx .ui-dialog input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--sx-accent);
+  margin: 0 !important;
+}
+
+/* ---------- Search input groups (AskOne, files search) ------------------- */
+
+html.sx .input-group {
+  display: flex !important;
+  align-items: stretch;
+  max-width: 640px;
+}
+html.sx .input-group > input {
+  flex: 1;
+  min-width: 0;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: 0 !important;
+  min-height: 42px;
+  padding-left: 16px !important;
+}
+html.sx .input-group > .input-group-append { display: flex; }
+html.sx .input-group > .input-group-append > .button,
+html.sx .input-group > .input-group-append > button {
+  margin: 0 !important;
+  min-width: 52px !important;
+  height: auto !important;
+  border-radius: 0 999px 999px 0 !important;
+  background-color: var(--sx-accent) !important;
+  border-color: transparent !important;
+  color: var(--sx-on-accent) !important;
+  transform: none !important;
+}
+html.sx .input-group > .input-group-append > .button.studip-icon {
+  /* the magnifier is a background image on the button itself */
+  background-position: center !important;
+  filter: none;
+}
+html.sx .input-group > .input-group-append > .button.icon-shape-search {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-size: 20px !important;
+  font-size: 0 !important;
+}
+html.sx .input-group > .input-group-append > .button.icon-shape-search::before { display: none !important; }
+
+/* ---------- AskOne portal tiles ------------------------------------------ */
+
+html.sx ul.askone-boxed-grid {
+  gap: var(--sx-gap) !important;
+  padding: 0 !important;
+  margin: 20px 0 !important;
+  list-style: none;
+}
+html.sx ul.askone-boxed-grid > li { margin: 0 !important; flex: 1 1 260px; }
+html.sx ul.askone-boxed-grid > li > a {
+  display: flex !important;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 0% 0%, var(--sx-accent-soft), transparent 60%),
+    var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: calc(var(--sx-radius) + 4px) !important;
+  box-shadow: var(--sx-shadow) !important;
+  text-decoration: none !important;
+  color: var(--sx-ink) !important;
+  transition: transform 0.18s cubic-bezier(.3, 1.4, .5, 1), box-shadow 0.18s, border-color 0.18s;
+}
+html.sx ul.askone-boxed-grid > li > a:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sx-shadow-lg) !important;
+  border-color: var(--sx-accent-line) !important;
+}
+html.sx ul.askone-boxed-grid > li > a > h3 {
+  order: 2;
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 4px 22px 22px !important;
+  font: 750 20px/1.2 var(--sx-display) !important;
+  letter-spacing: -0.02em;
+  text-align: left !important;
+}
+html.sx ul.askone-boxed-grid > li > a > div {
+  order: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 22px 22px 10px !important;
+  min-height: 0 !important;
+  background: transparent !important;
+}
+html.sx ul.askone-boxed-grid > li > a > div br { display: none; }
+html.sx ul.askone-boxed-grid > li > a > div img,
+html.sx ul.askone-boxed-grid > li > a > div svg {
+  width: 64px !important;
+  height: 64px !important;
+  object-fit: contain;
+  transition: transform 0.25s cubic-bezier(.3, 1.6, .5, 1);
+}
+html.sx.sx-dark ul.askone-boxed-grid > li > a > div img { filter: brightness(1.9) saturate(0.7); }
+html.sx ul.askone-boxed-grid > li > a:hover > div img,
+html.sx ul.askone-boxed-grid > li > a:hover > div svg { transform: scale(1.08) rotate(-4deg); }
+
+/* AskOne group pages: tiles with the icon as a background image */
+html.sx ul.askone-boxed-grid-group {
+  gap: var(--sx-gap) !important;
+  padding: 0 !important;
+  margin: 8px 0 0 !important;
+  list-style: none;
+}
+html.sx ul.askone-boxed-grid-group > li {
+  margin: 0 !important;
+  flex: 1 1 300px;
+  width: auto !important;
+  height: auto !important;
+}
+html.sx ul.askone-boxed-grid-group > li > a {
+  display: flex !important;
+  flex-direction: column;
+  gap: 6px;
+  height: 100% !important;
+  min-height: 0 !important;
+  box-sizing: border-box;
+  padding: 104px 22px 22px !important;
+  background-color: var(--sx-surface-2) !important;
+  background-position: 22px 22px !important;
+  background-size: 64px 64px !important;
+  background-repeat: no-repeat !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: calc(var(--sx-radius) + 4px) !important;
+  box-shadow: var(--sx-shadow) !important;
+  text-decoration: none !important;
+  color: var(--sx-ink) !important;
+  transition: transform 0.18s cubic-bezier(.3, 1.4, .5, 1), box-shadow 0.18s, border-color 0.18s;
+}
+html.sx ul.askone-boxed-grid-group > li > a:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sx-shadow-lg) !important;
+  border-color: var(--sx-accent-line) !important;
+}
+html.sx ul.askone-boxed-grid-group > li > a > h3 {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  text-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  font: 750 20px/1.2 var(--sx-display) !important;
+  letter-spacing: -0.02em;
+  text-align: left !important;
+}
+html.sx ul.askone-boxed-grid-group > li > a > div {
+  background: transparent !important;
+  color: var(--sx-ink-2) !important;
+  text-shadow: none !important;
+  height: auto !important;
+  padding: 0 !important;
+  text-align: left !important;
+  font-size: 14px;
+  line-height: 1.45;
+}
+html.sx ul.askone-boxed-grid-group > li > a > svg.create_abo {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  padding: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: var(--sx-ink-3) !important;
+}
+html.sx ul.askone-boxed-grid-group > li > a > svg.create_abo:hover { color: var(--sx-accent-text) !important; }
+
+/* Icon recolored via the --sx-icon variable that app.js copies from the inline background */
+html.sx ul.askone-boxed-grid-group > li > a.sx-masked-icon {
+  background-image: none !important;
+  padding-top: 96px !important;
+}
+html.sx ul.askone-boxed-grid-group > li > a.sx-masked-icon::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--sx-accent-soft);
+  transition: background 0.18s;
+}
+html.sx ul.askone-boxed-grid-group > li > a.sx-masked-icon::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 40px;
+  height: 40px;
+  background: var(--sx-accent-text);
+  -webkit-mask: var(--sx-icon) center / contain no-repeat;
+  mask: var(--sx-icon) center / contain no-repeat;
+  transition: transform 0.25s cubic-bezier(.3, 1.6, .5, 1);
+}
+html.sx ul.askone-boxed-grid-group > li > a.sx-masked-icon:hover::before { background: var(--sx-accent); }
+html.sx ul.askone-boxed-grid-group > li > a.sx-masked-icon:hover::after {
+  background: var(--sx-on-accent);
+  transform: scale(1.08) rotate(-4deg);
+}
+
+/* ---------- Notice board plugin page ------------------------------------- */
+
+html.sx #content > h2 {
+  font: 750 22px/1.2 var(--sx-display) !important;
+  letter-spacing: -0.02em;
+  margin: 26px 2px 12px !important;
+  color: var(--sx-ink) !important;
+}
+html.sx #content > h2:first-of-type { margin-top: 6px !important; }
+
+html.sx ul.sb-categories {
+  list-style: none;
+  margin: 0 !important;
+  padding: 10px !important;
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  column-gap: 10px !important;
+  column-rule: 1px solid var(--sx-line) !important;
+}
+html.sx ul.sb-categories > li {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  break-inside: avoid;
+  margin: 0 !important;
+  padding: 7px 10px 7px 22px !important;
+  border: 0 !important;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.12s;
+}
+html.sx ul.sb-categories > li:hover { background: var(--sx-surface-2) !important; }
+html.sx ul.sb-categories > li::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: var(--sx-line-strong);
+}
+html.sx ul.sb-categories > li:has(> a.category.unseen)::before {
+  background: var(--sx-accent);
+  box-shadow: 0 0 0 3px var(--sx-accent-soft);
+}
+html.sx ul.sb-categories a.category {
+  flex: 1;
+  min-width: 0;
+  border: 0 !important;
+  padding: 0 !important;
+  color: var(--sx-ink) !important;
+  text-decoration: none !important;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+html.sx ul.sb-categories a.category.unseen { font-weight: 650; }
+html.sx ul.sb-categories a.category:hover { color: var(--sx-accent-text) !important; }
+html.sx ul.sb-categories .tooltip-icon,
+html.sx ul.sb-categories .tooltip-icon .studip-icon { color: var(--sx-ink-3) !important; }
+html.sx ul.sb-categories .options { flex: none; display: flex; opacity: 0.35; transition: opacity 0.12s; }
+html.sx ul.sb-categories > li:hover .options { opacity: 1; }
+html.sx ul.sb-categories .options .studip-icon { color: var(--sx-ink-2) !important; }
+html.sx ul.sb-categories .options a:hover .studip-icon { color: var(--sx-accent) !important; }
+
+/* Full-page ads list: no height cap, rendered as a card */
+html.sx #content > ul.sb-articles {
+  max-height: none !important;
+  overflow: visible !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  padding: 8px !important;
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+}
+
+/* Loose rich-text blocks placed directly in the content area */
+html.sx #content > .formatted-content {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-left: 4px solid var(--sx-info) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  padding: 16px 20px !important;
+  margin-top: var(--sx-gap) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx #content > .formatted-content h1,
+html.sx #content > .formatted-content h2,
+html.sx #content > .formatted-content h3,
+html.sx #content > .formatted-content strong:first-child {
+  font: 700 16px/1.3 var(--sx-display) !important;
+  margin: 0 0 8px !important;
+}
+html.sx #content > .formatted-content ul { margin: 0 !important; padding-left: 18px !important; }
+html.sx #content > .formatted-content li { margin: 3px 0; color: var(--sx-ink-2); }
+
+/* ---------- My work place tiles ------------------------------------------ */
+
+html.sx ul.content-items {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none;
+}
+html.sx ul.content-items > li.content-item {
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  border: 0 !important;
+  background: none !important;
+}
+html.sx a.content-item-link {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 14px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 18px !important;
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  text-decoration: none !important;
+  transition: transform 0.18s cubic-bezier(.3, 1.4, .5, 1), box-shadow 0.18s, border-color 0.18s;
+}
+html.sx a.content-item-link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sx-shadow-lg);
+  border-color: var(--sx-accent-line) !important;
+}
+html.sx .content-item-img-wrapper {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 14px;
+  background: var(--sx-accent-soft) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transition: background 0.15s;
+}
+html.sx .content-item-img-wrapper svg,
+html.sx .content-item-img-wrapper img {
+  width: 26px !important;
+  height: 26px !important;
+}
+/* Inline SVGs already paint with currentColor (their background rects use fill="none") */
+html.sx .content-item-img-wrapper svg { color: var(--sx-accent-text) !important; }
+/* Plugin icons are blue image files: draw their silhouette as an accent-coloured
+   drop-shadow and slide the original out of the clipped box */
+html.sx .content-item-img-wrapper img {
+  transform: translateX(-120px);
+  filter: drop-shadow(120px 0 0 var(--sx-accent-text)) !important;
+}
+html.sx a.content-item-link:hover .content-item-img-wrapper { background: var(--sx-accent) !important; }
+html.sx a.content-item-link:hover .content-item-img-wrapper svg { color: var(--sx-on-accent) !important; }
+html.sx a.content-item-link:hover .content-item-img-wrapper img { filter: drop-shadow(120px 0 0 var(--sx-on-accent)) !important; }
+html.sx .content-item-text { min-width: 0; }
+html.sx p.content-item-title {
+  margin: 2px 0 4px !important;
+  color: var(--sx-ink) !important;
+  font: 700 16px/1.25 var(--sx-display) !important;
+  letter-spacing: -0.01em;
+}
+html.sx p.content-item-description {
+  margin: 0 !important;
+  color: var(--sx-ink-3) !important;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ---------- OER search ---------------------------------------------------- */
+
+html.sx .oer_search .frame {
+  align-items: stretch;
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+  height: 42px !important;
+}
+html.sx .oer_search .frame:focus-within { border-color: var(--sx-accent) !important; box-shadow: 0 0 0 4px var(--sx-accent-soft); }
+html.sx .oer_search .frame input {
+  flex: 1;
+  height: 100% !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 18px !important;
+}
+html.sx .oer_search .frame button {
+  height: 100% !important;
+  min-width: 46px;
+  border: 0 !important;
+  border-left: 1px solid var(--sx-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--sx-ink-2) !important;
+  display: grid !important;
+  place-items: center;
+}
+html.sx .oer_search .frame button:hover { background: var(--sx-surface-3) !important; color: var(--sx-ink) !important; }
+html.sx .oer_search .frame button .studip-icon { color: currentColor !important; }
+
+/* "Discover learning materials" banner */
+html.sx .oer_search .browser {
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--sx-accent-soft), transparent 60%),
+    var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  margin-top: 14px !important;
+  overflow: hidden;
+}
+html.sx .oer_search .browser h3 {
+  font: 750 20px/1.25 var(--sx-display) !important;
+  color: var(--sx-ink) !important;
+  letter-spacing: -0.02em;
+}
+html.sx .oer_search .browser .intro div { color: var(--sx-ink-2) !important; }
+html.sx .oer_search .browser a.button {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border-color: transparent !important;
+}
+
+/* ---------- Blubber (chat) ----------------------------------------------- */
+
+html.sx .blubber_panel { gap: var(--sx-gap); }
+html.sx .blubber_thread {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  overflow: hidden;
+}
+html.sx .blubber_thread .empty_blubber_background {
+  background-color: transparent !important;
+  background-size: min(320px, 60%) auto !important;
+  color: var(--sx-ink-3) !important;
+  opacity: 0.85;
+}
+html.sx .blubber_thread .empty_blubber_background * {
+  color: var(--sx-ink-2) !important;
+  font-family: var(--sx-display) !important;
+}
+html.sx .blubber_thread .writer {
+  background-color: var(--sx-surface-2) !important;
+  border: 0 !important;
+  border-top: 1px solid var(--sx-line) !important;
+  padding: 12px 14px !important;
+  align-items: center;
+}
+html.sx .blubber_thread .writer textarea,
+html.sx .blubber_thread .writer [contenteditable] {
+  background: var(--sx-surface) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: 999px !important;
+  padding: 10px 16px !important;
+  min-height: 0;
+  resize: none;
+}
+html.sx .blubber_thread .writer textarea:focus { border-color: var(--sx-accent) !important; box-shadow: 0 0 0 4px var(--sx-accent-soft) !important; }
+html.sx .blubber_thread .writer .studip-icon { color: var(--sx-accent-text) !important; }
+
+/* Chat bubbles */
+html.sx li.talk-bubble-wrapper { border: 0 !important; }
+html.sx .talk-bubble-avatar img { border-radius: 50% !important; }
+html.sx .talk-bubble {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 4px 16px 16px 16px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+html.sx .talk-bubble::after,
+html.sx .talk-bubble::before { display: none !important; }
+html.sx .talk-bubble-header a {
+  color: var(--sx-accent-text) !important;
+  font-weight: 650;
+  font-size: 12.5px;
+  text-decoration: none !important;
+}
+html.sx .talk-bubble-talktext,
+html.sx .talk-bubble-talktext .html,
+html.sx .talk-bubble-talktext .formatted-content {
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  font-size: 14px;
+  line-height: 1.5;
+}
+html.sx .talk-bubble-talktext blockquote,
+html.sx .talk-bubble blockquote {
+  background: var(--sx-surface-3) !important;
+  color: var(--sx-ink-2) !important;
+  border: 0 !important;
+  border-left: 3px solid var(--sx-accent) !important;
+  border-radius: 8px !important;
+  margin: 6px 0 !important;
+  padding: 8px 12px !important;
+}
+html.sx .talk-bubble-footer,
+html.sx .talk-bubble-talktext-time,
+html.sx .talk-bubble-talktext-time time {
+  color: var(--sx-ink-3) !important;
+  font: 500 11px/1 var(--sx-mono) !important;
+}
+html.sx .talk-bubble-footer .studip-icon { color: var(--sx-ink-3) !important; }
+html.sx .talk-bubble-footer a:hover .studip-icon { color: var(--sx-accent) !important; }
+
+html.sx .blubber_sideinfo .lowprio_info,
+html.sx .blubber_sideinfo .blubber_public_info { color: var(--sx-ink-3) !important; font-size: 12.5px; line-height: 1.5; }
+html.sx .blubber_sideinfo .context_info,
+html.sx .blubber_thread .context_info { border-color: var(--sx-line) !important; }
+
+/* Info panel next to the thread */
+html.sx .blubber_sideinfo {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  padding: 6px 14px !important;
+  color: var(--sx-ink);
+}
+html.sx .blubber_sideinfo li,
+html.sx .blubber_sideinfo .indented,
+html.sx .blubber_sideinfo .new_section {
+  border-color: var(--sx-line) !important;
+}
+html.sx .blubber_sideinfo li { padding: 8px 0 !important; }
+html.sx .blubber_sideinfo a {
+  color: var(--sx-ink) !important;
+  text-decoration: none;
+  font-weight: 500;
+}
+html.sx .blubber_sideinfo a:hover { color: var(--sx-accent-text) !important; }
+html.sx .blubber_sideinfo img,
+html.sx .blubber_sideinfo .avatar { border-radius: 50% !important; vertical-align: middle; margin-right: 6px; }
+
+/* Thread list in the sidebar */
+html.sx .blubber-threads-widget li,
+html.sx #blubber-threads li { border-color: var(--sx-line) !important; }
+html.sx .blubber-threads-widget li.active,
+html.sx #blubber-threads li.active {
+  background: var(--sx-accent-soft) !important;
+  border-radius: 10px;
+}
+
+/* ---------- Compact header layout (desktop) ------------------------------ */
+/* #top-bar becomes display: contents so title, dock and links share one grid */
+
+@media (min-width: 1025px) {
+  html.sx #main-header {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 6px;
+    padding: 10px 20px 0 !important;
+    box-sizing: border-box;
+  }
+  html.sx #top-bar { display: contents !important; }
+  html.sx #responsive-menu { display: none !important; }
+  html.sx #site-title { grid-column: 1; grid-row: 1; justify-self: start; width: auto !important; flex: none !important; }
+  html.sx #header-links { grid-column: 3; grid-row: 1; justify-self: end; width: auto !important; }
+  html.sx #navigation-level-1 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding: 0 !important;
+    width: auto !important;
+    min-width: 0;
+  }
+  html.sx #current-page-structure {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    padding: 6px 0 0 !important;
+    width: auto !important;
+  }
+  html.sx #responsive-contentbar-container { grid-column: 1 / -1; }
+
+  /* Pages without tabs: the row would only hold help/fullscreen, so drop it */
+  html.sx #current-page-structure:not(:has(#tabs li)):not(:has(#context-title)) { display: none !important; }
+
+  /* Pinned-on-scroll styling does not apply when the bar is display: contents */
+  html.sx body.fixed #top-bar { background: none !important; box-shadow: none !important; border: 0 !important; }
+}
+
+@media (min-width: 1700px) {
+  /* Everything in one row: title | dock | links */
+  html.sx #navigation-level-1 { grid-column: 2; grid-row: 1; display: flex !important; align-items: center; }
+  /* Stud.IP pins the dock to the bottom of the bar; center it on the same line as title and links */
+  html.sx #navigation-level-1-items { padding: 4px 6px !important; border-radius: 18px; align-self: center !important; }
+  html.sx #navigation-level-1-items > li > a,
+  html.sx #navigation-level-1-items > li > button {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+  }
+  html.sx #current-page-structure { grid-row: 2; }
+}
+
+/* ---------- My work place: plugin pages ---------------------------------- */
+
+/* Form footers (news admin, job search) */
+html.sx form.default > footer {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 12px 0 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Page forms: put the legend inside the card as a heading instead of on the border */
+html.sx #content form.default fieldset > legend {
+  float: left;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 0 12px !important;
+}
+html.sx #content form.default fieldset > legend ~ * { clear: both; }
+
+/* Date and time pickers ship a black calendar icon */
+html.sx.sx-dark input.has-date-picker,
+html.sx.sx-dark input.has-datetime-picker {
+  background-image: url("https://elearning.uni-oldenburg.de/assets/images/icons/white/schedule.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) 50% !important;
+  background-size: 18px auto !important;
+  padding-right: 36px !important;
+}
+html.sx.sx-dark input.has-time-picker {
+  background-image: url("https://elearning.uni-oldenburg.de/assets/images/icons/white/date.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) 50% !important;
+  background-size: 18px auto !important;
+  padding-right: 36px !important;
+}
+html.sx input.has-date-picker,
+html.sx input.has-datetime-picker,
+html.sx input.has-time-picker {
+  background-position: calc(100% - 10px) 50% !important;
+  background-size: 18px auto !important;
+  padding-right: 36px !important;
+}
+
+/* Search groups whose submit button is a direct child (files search, Vips, theses) */
+html.sx .input-group > button.submit-search {
+  margin: 0 !important;
+  min-width: 52px !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 0 var(--sx-radius-sm) var(--sx-radius-sm) 0 !important;
+  background: var(--sx-accent) !important;
+  border: 0 !important;
+  color: var(--sx-on-accent) !important;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+html.sx .input-group > button.submit-search:hover { filter: brightness(1.08); }
+html.sx .input-group > button.submit-search svg,
+html.sx .input-group > button.submit-search svg * { color: var(--sx-on-accent) !important; fill: var(--sx-on-accent) !important; width: 18px; height: 18px; }
+
+/* Vips "Tasks and examinations" teaser */
+html.sx .vips-teaser {
+  position: relative;
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--sx-accent-soft), transparent 60%),
+    var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  color: var(--sx-ink-2) !important;
+  padding: 24px 24px 24px 132px !important;
+  margin-bottom: 18px !important;
+}
+html.sx .vips-teaser::before {
+  content: "";
+  position: absolute;
+  left: 28px;
+  top: 24px;
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  background: var(--sx-accent-soft);
+}
+html.sx .vips-teaser::after {
+  content: "";
+  position: absolute;
+  left: 46px;
+  top: 42px;
+  width: 40px;
+  height: 40px;
+  background: var(--sx-accent-text);
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/blue/tasks.svg") center / contain no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/blue/tasks.svg") center / contain no-repeat;
+}
+html.sx .vips-teaser > header {
+  font: 750 20px/1.25 var(--sx-display) !important;
+  color: var(--sx-ink) !important;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+html.sx .vips-teaser > p { color: var(--sx-ink-2) !important; max-width: 760px; }
+html.sx .vips-teaser > a.button {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border-color: transparent !important;
+}
+
+/* select2 dropdowns */
+html.sx .select2-container--default .select2-selection--single,
+html.sx .select2-container--default .select2-selection--multiple {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: var(--sx-radius-sm) !important;
+  min-height: 36px;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+}
+html.sx .select2-container--default.select2-container--open .select2-selection--single,
+html.sx .select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: var(--sx-accent) !important;
+  box-shadow: 0 0 0 4px var(--sx-accent-soft) !important;
+}
+html.sx .select2-container--default .select2-selection__rendered,
+html.sx .select2-container--default .select2-selection__content,
+html.sx .select2-container--default .select2-selection__rendered * { color: var(--sx-ink) !important; }
+html.sx .select2-container--default .select2-selection__placeholder { color: var(--sx-ink-3) !important; }
+html.sx .select2-container--default .select2-selection__arrow { height: 100% !important; top: 0 !important; }
+html.sx .select2-container--default .select2-selection__arrow b { border-top-color: var(--sx-ink-3) !important; }
+html.sx .select2-dropdown {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: var(--sx-radius-sm) !important;
+  box-shadow: var(--sx-shadow-lg);
+  overflow: hidden;
+  color: var(--sx-ink) !important;
+}
+html.sx .select2-results__option { color: var(--sx-ink) !important; background: transparent !important; }
+html.sx .select2-results__option[aria-selected="true"],
+html.sx .select2-results__option--selected { background: var(--sx-surface-2) !important; }
+html.sx .select2-results__option--highlighted,
+html.sx .select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background: var(--sx-accent-soft) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx .select2-search__field { background: var(--sx-surface-2) !important; color: var(--sx-ink) !important; }
+
+/* Thesis topic tiles: keep the colored group stripe, turn the rest into cards */
+html.sx .studip-grid { gap: 14px !important; }
+html.sx .studip-grid-element {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+html.sx .studip-grid-element:hover {
+  transform: translateY(-2px);
+  border-color: var(--sx-line-strong) !important;
+  box-shadow: var(--sx-shadow-lg);
+}
+html.sx .studip-grid-element .tiled-grid-element-header-title {
+  color: var(--sx-ink) !important;
+  font: 650 18px/1.3 var(--sx-display) !important;
+  letter-spacing: -0.01em;
+}
+/* the header is capped at 100px, so clamp whole lines instead of cutting one in half */
+html.sx .studip-grid-element a.tiles-grid-element-header-content {
+  color: var(--sx-ink) !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+html.sx .studip-grid-element a.tiles-grid-element-header-content:hover .tiled-grid-element-header-title { color: var(--sx-accent-text) !important; }
+html.sx .studip-grid-element footer,
+html.sx .studip-grid-element footer * { color: var(--sx-ink-2) !important; }
+
+/* Courseware tiles: keep the chosen tile color */
+html.sx .cw-tiles { gap: var(--sx-gap) !important; }
+html.sx .cw-tile {
+  border-radius: var(--sx-radius) !important;
+  overflow: hidden !important;
+  box-shadow: var(--sx-shadow);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+html.sx .cw-tile:hover { transform: translateY(-3px); box-shadow: var(--sx-shadow-lg); }
+html.sx .cw-tile .preview-image { background-color: var(--sx-surface-2) !important; }
+html.sx .cw-tile .overlay-action-menu {
+  background: rgba(10, 10, 14, 0.45) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 10px !important;
+  margin: 8px 8px 0 auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: grid;
+  place-items: center;
+}
+html.sx .cw-tile .overlay-action-menu .action-menu-icon,
+html.sx .cw-tile .overlay-action-menu .action-menu-icon * { color: #fff !important; }
+html.sx .cw-tile .overlay-action-menu .action-menu-icon span { background: #fff !important; }
+html.sx .cw-tile .description header { font: 650 18px/1.3 var(--sx-display) !important; }
+
+/* Opencast search bar */
+html.sx ul.oc--searchbar-container {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line-strong) !important;
+  border-radius: 999px !important;
+  overflow: hidden;
+  max-width: 640px;
+}
+html.sx ul.oc--searchbar-container:focus-within {
+  border-color: var(--sx-accent) !important;
+  box-shadow: 0 0 0 4px var(--sx-accent-soft);
+}
+html.sx ul.oc--searchbar-container input,
+html.sx ul.oc--searchbar-container input:focus {
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-left: 16px !important;
+}
+html.sx li.oc--searchbar--search-icon {
+  background: var(--sx-accent) !important;
+  border: 0 !important;
+  min-width: 52px;
+  display: grid !important;
+  place-items: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+html.sx li.oc--searchbar--search-icon img {
+  transform: translateX(-120px);
+  filter: drop-shadow(120px 0 0 var(--sx-on-accent)) !important;
+}
+
+/* Collapsible table groups draw their arrow as a blue-filled mask on ::before */
+html.sx .toggle-indicator a::before,
+html.sx a.toggler::before {
+  background-color: var(--sx-accent-text) !important;
+  margin-right: 4px !important;
+}
+
+/* Profile: app.js mirrors the sidebar picture, name and score into a header card for the collapsed sidebar */
+html.sx .sx-profile-hero { display: none; }
+html.sx.sx-rail body#profile-index #content > .hidden-medium-up { display: none !important; }
+html.sx.sx-rail .sx-profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 0 0 var(--sx-gap);
+  padding: 22px;
+  background:
+    radial-gradient(120% 160% at 0% 0%, var(--sx-accent-soft), transparent 55%),
+    var(--sx-surface);
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+  box-shadow: var(--sx-shadow);
+}
+html.sx .sx-profile-pic {
+  flex: none;
+  display: block;
+  width: 104px;
+  height: 104px;
+  padding: 3px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--sx-accent), color-mix(in oklab, var(--sx-accent) 40%, var(--sx-surface)));
+  box-shadow: var(--sx-shadow);
+  transition: transform 0.2s cubic-bezier(.3, 1.4, .5, 1);
+}
+html.sx a.sx-profile-pic:hover { transform: scale(1.04) rotate(-2deg); }
+html.sx .sx-profile-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 27px;
+  border: 3px solid var(--sx-surface);
+  box-sizing: border-box;
+  background: var(--sx-surface-2);
+}
+html.sx .sx-profile-info { min-width: 0; }
+html.sx .sx-profile-info h1 {
+  margin: 0 0 10px !important;
+  font: 750 26px/1.15 var(--sx-display) !important;
+  letter-spacing: -0.025em;
+  color: var(--sx-ink) !important;
+}
+html.sx .sx-profile-meta { display: flex; flex-wrap: wrap; gap: 8px; }
+html.sx .sx-profile-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--sx-surface-2);
+  border: 1px solid var(--sx-line);
+  color: var(--sx-ink-2) !important;
+  font-size: 12.5px;
+}
+html.sx .sx-profile-chip a { color: var(--sx-accent-text) !important; text-decoration: none; }
+
+/* Avatars everywhere: rounded squares that scale with their size */
+html.sx img.avatar-normal,
+html.sx img.avatar-original { border-radius: 24px !important; }
+html.sx img.avatar-medium { border-radius: 14px !important; }
+html.sx img.avatar-small { border-radius: 8px !important; }
+html.sx img.avatar-tiny { border-radius: 5px !important; }
+html.sx #sidebar .avatar-widget img.avatar-normal {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+html.sx #sidebar .avatar-widget .profile-avatar,
+html.sx #sidebar .avatar-widget .avatar-overlay { border-radius: 24px !important; overflow: hidden; }
+
+/* ---------- Login page ---------------------------------------------------- */
+
+html.sx body#login #background-desktop,
+html.sx body#login #background-mobile {
+  filter: blur(6px) saturate(115%) brightness(0.55);
+  transform: scale(1.04);
+}
+html.sx body#login #content.loginpage::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(80% 70% at 50% 40%, transparent, rgba(8, 8, 14, 0.55)),
+    linear-gradient(180deg, rgba(8, 8, 14, 0.25), rgba(8, 8, 14, 0.6));
+}
+html.sx body#login #login-wrapper { position: relative; z-index: 1; }
+html.sx body#login #login-content-wrapper {
+  gap: 20px;
+  align-items: stretch;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html.sx body#login #loginbox,
+html.sx body#login #login-infobox {
+  background: color-mix(in oklab, var(--sx-surface) 78%, transparent) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid color-mix(in oklab, #fff 14%, transparent) !important;
+  border-radius: 26px !important;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.65) !important;
+  color: var(--sx-ink) !important;
+}
+html.sx body#login #loginbox { padding: 30px 30px 26px !important; }
+html.sx body#login #loginbox > header {
+  display: block !important;
+  height: auto !important;
+  margin: 0 0 22px !important;
+}
+html.sx body#login #loginbox > header h1 {
+  display: block !important;
+  width: auto;
+  height: auto;
+  margin: 0 !important;
+  font: 750 28px/1.1 var(--sx-display) !important;
+  letter-spacing: -0.03em;
+  color: var(--sx-ink) !important;
+}
+html.sx body#login #loginbox > header h1::after {
+  content: "Stud.IP · Universität Oldenburg";
+  display: block;
+  margin-top: 6px;
+  font: 500 13px/1.3 var(--sx-font);
+  letter-spacing: 0;
+  color: var(--sx-ink-3);
+}
+html.sx body#login nav.login-bottom {
+  display: flex !important;
+  flex-direction: column;
+  gap: 12px;
+  width: auto !important;
+  height: auto !important;
+}
+html.sx body#login nav.login-bottom > a {
+  display: block;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 16px 18px !important;
+  border-radius: 16px !important;
+  background: var(--sx-surface-2) !important;
+  border: 1px solid var(--sx-line) !important;
+  text-decoration: none !important;
+  transition: transform 0.15s, border-color 0.15s, background 0.15s;
+}
+html.sx body#login nav.login-bottom > a:hover {
+  transform: translateY(-2px);
+  border-color: var(--sx-accent-line) !important;
+}
+html.sx body#login nav.login-bottom > a .title {
+  all: unset;
+  display: block;
+  font: 700 16px/1.25 var(--sx-display) !important;
+  color: var(--sx-ink) !important;
+  letter-spacing: -0.01em;
+}
+html.sx body#login nav.login-bottom > a .description {
+  margin: 6px 0 0 !important;
+  font: 400 12.5px/1.45 var(--sx-font) !important;
+  color: var(--sx-ink-3) !important;
+  text-align: left !important;
+}
+html.sx body#login nav.login-bottom > a:first-child {
+  background: linear-gradient(140deg, var(--sx-accent), color-mix(in oklab, var(--sx-accent) 70%, #1b1530)) !important;
+  border-color: transparent !important;
+  box-shadow: 0 14px 30px -14px var(--sx-accent);
+}
+html.sx body#login nav.login-bottom > a:first-child .title,
+html.sx body#login nav.login-bottom > a:first-child .description { color: var(--sx-on-accent) !important; }
+html.sx body#login nav.login-bottom > a:first-child .description { opacity: 0.85; }
+html.sx body#login #login-form { padding: 0 !important; }
+html.sx body#login #login-form section { width: auto !important; }
+html.sx body#login #login-form input { width: 100% !important; box-sizing: border-box; min-height: 42px; }
+html.sx body#login #login-form #submit_login {
+  width: 100% !important;
+  min-height: 42px;
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+}
+html.sx body#login #login-faq-box {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 30px !important;
+}
+html.sx body#login #login-faq-content-wrapper { background: transparent !important; width: auto !important; }
+html.sx body#login .login-box-header h2 {
+  font: 750 20px/1.2 var(--sx-display) !important;
+  color: var(--sx-ink) !important;
+  letter-spacing: -0.02em;
+}
+html.sx body#login .login-faq-content,
+html.sx body#login .login-faq-content * { color: var(--sx-ink-2) !important; }
+html.sx body#login .login-faq-content article.studip {
+  background: var(--sx-surface-2) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 14px !important;
+}
+html.sx body#login .login-faq-content a { color: var(--sx-accent-text) !important; }
+
+/* ---------- Responsive: leave the native mobile menu alone --------------- */
+
+@media (max-width: 1024px) {
+  html.sx #navigation-level-1-items { box-shadow: none; }
+  html.sx #top-bar { padding: 8px 12px 0 !important; }
+  html.sx #content-wrapper { padding: 12px 12px 32px !important; }
+  html.sx #sidebar { padding: 12px !important; }
+}
+
+/* ---------- Print: fall back to plain look ------------------------------- */
+
+@media print {
+  html.sx body::before { display: none; }
+  html.sx .sx-overlay,
+  html.sx .sx-fab { display: none !important; }
+}
+
+/* ---------- Wiki and Courseware ribbon ---------- */
+html.sx .cw-ribbon,
+html.sx #cw-ribbon {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: var(--sx-radius) !important;
+  box-shadow: var(--sx-shadow);
+  color: var(--sx-ink) !important;
+}
+html.sx .cw-ribbon .contentbar-icon .studip-icon,
+html.sx .cw-ribbon .contentbar-icon svg { color: var(--sx-accent-text) !important; }
+html.sx .cw-ribbon-breadcrumb,
+html.sx .cw-ribbon-breadcrumb a { color: var(--sx-ink-2) !important; }
+html.sx .cw-ribbon-breadcrumb a:hover { color: var(--sx-accent-text) !important; }
+
+/* Empty wiki illustration: three copies of the blue wiki icon, redrawn as accent masks.
+   The link's own background copy moves to the section so it can be masked too. */
+html.sx .wiki-empty-background { background-image: none !important; }
+html.sx .wiki-empty-background::before,
+html.sx .wiki-empty-background::after {
+  background: var(--sx-accent) !important;
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/wiki.svg") center / contain no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/wiki.svg") center / contain no-repeat;
+}
+html.sx .wiki-empty-background::before { opacity: 0.18 !important; }
+html.sx .wiki-empty-background::after { opacity: 0.4 !important; }
+html.sx section:has(> .wiki-empty-background) { position: relative; }
+html.sx section:has(> .wiki-empty-background)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 40vh;
+  pointer-events: none;
+  background: var(--sx-accent);
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/wiki.svg") calc(50% - 100px) calc(50% + 40px) / 140px auto no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/wiki.svg") calc(50% - 100px) calc(50% + 40px) / 140px auto no-repeat;
+}
+
+/* Empty Blubber thread: the three blue bubble copies are redrawn as accent masks, like the wiki.
+   The element's own background copy moves to the thread so it can be masked without clipping the text. */
+html.sx .blubber_thread .empty_blubber_background { background-image: none !important; opacity: 1 !important; }
+html.sx .blubber_thread .empty_blubber_background::before,
+html.sx .blubber_thread .empty_blubber_background::after {
+  background: var(--sx-accent) !important;
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") center / contain no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") center / contain no-repeat;
+}
+html.sx .blubber_thread .empty_blubber_background::before { opacity: 0.16 !important; }
+html.sx .blubber_thread .empty_blubber_background::after { opacity: 0.35 !important; }
+html.sx .blubber_thread:has(> .empty_blubber_background)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 81px;
+  pointer-events: none;
+  opacity: 0.6;
+  background: var(--sx-accent);
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") calc(50% - 100px) calc(50% + 40px) / min(320px, 60%) auto no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") calc(50% - 100px) calc(50% + 40px) / min(320px, 60%) auto no-repeat;
+}
+
+/* Module icons in "My courses" stay on one line; the name column gives up the space */
+html.sx table.mycourses td.course-navigation { width: 1% !important; white-space: nowrap; }
+html.sx table.mycourses ul.my-courses-navigation { flex-wrap: nowrap !important; }
+
+/* Colour bar doubles as the "Change colour grouping" shortcut (see app.js) */
+html.sx table.mycourses > tbody > tr > td.sx-group-pick { cursor: pointer; }
+html.sx table.mycourses > tbody > tr:hover > td.sx-group-pick,
+html.sx table.mycourses > tbody > tr > td.sx-group-pick:focus-visible {
+  background: linear-gradient(var(--sx-group), var(--sx-group)) 8px 50% / 9px calc(100% - 14px) no-repeat !important;
+  outline: none;
+}
+html.sx table.mycourses > tbody > tr > td.sx-group-pick { transition: background-size 0.15s; }
+
+/* Sort arrows in table headers are masks; paint them in the accent instead of Stud.IP blue */
+html.sx th.sortasc::after,
+html.sx th.sortdesc::after { background-color: var(--sx-accent-text) !important; }
+
+/* "Add document" source picker: bordered squares become theme tiles */
+html.sx .file_select_possibilities > div { gap: 12px; }
+html.sx .file_select_possibilities > div > a {
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 14px !important;
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink-2) !important;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+}
+html.sx .file_select_possibilities > div > a .studip-icon { color: var(--sx-accent-text) !important; }
+html.sx .file_select_possibilities > div > a:hover,
+html.sx .file_select_possibilities > div > a:focus-visible {
+  background: var(--sx-accent-soft) !important;
+  border-color: var(--sx-accent-line) !important;
+  color: var(--sx-ink) !important;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* Sidebar widget extra slot (e.g. "new conversation" in Blubber) sits on the card, not on a white box */
+html.sx .sidebar-widget.sidebar-widget-has-extra { grid-template-columns: minmax(0, 1fr) auto !important; }
+html.sx .sidebar-widget-extra {
+  background: transparent !important;
+  border: 0 !important;
+  width: auto !important;
+  align-self: center;
+  padding: 8px 12px 0 0 !important;
+}
+html.sx .sidebar-widget-extra > a {
+  display: grid !important;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  box-sizing: border-box;
+  border-radius: 9px !important;
+  border: 1px solid var(--sx-line) !important;
+  background: var(--sx-surface-2) !important;
+  transition: background 0.15s, border-color 0.15s;
+}
+html.sx .sidebar-widget-extra > a:hover { background: var(--sx-accent-soft) !important; border-color: var(--sx-accent-line) !important; }
+html.sx .sidebar-widget-extra .studip-icon { color: var(--sx-accent-text) !important; }
+
+/* Blubber conversation list */
+html.sx .blubber_threads_widget ol > li {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 12px;
+  margin: 2px 0;
+  transition: background 0.12s;
+}
+html.sx .blubber_threads_widget ol > li:hover { background: var(--sx-surface-2) !important; }
+html.sx .blubber_threads_widget ol > li.active {
+  background: var(--sx-accent-soft) !important;
+  box-shadow: inset 3px 0 0 var(--sx-accent);
+}
+html.sx .blubber_threads_widget ol > li > a { text-decoration: none !important; }
+html.sx .blubber_threads_widget .thread-name {
+  color: var(--sx-ink) !important;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+html.sx .blubber_threads_widget li.active .thread-name { color: var(--sx-accent-text) !important; font-weight: 600; }
+html.sx .blubber_threads_widget time {
+  color: var(--sx-ink-3) !important;
+  font-size: 11.5px;
+  text-decoration: none !important;
+}
+html.sx .blubber_threads_widget .avatar { border-radius: 10px; overflow: hidden; }
+html.sx .blubber_threads_widget .avatar[style*="icons/blue/blubber.svg"] {
+  background: var(--sx-accent-text) !important;
+  -webkit-mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") center / 70% no-repeat;
+  mask: url("https://elearning.uni-oldenburg.de/assets/images/icons/black/blubber.svg") center / 70% no-repeat;
+  border-radius: 0;
+}
+html.sx .blubber_threads_widget .unseen-comments-counter {
+  background: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* ---------- Fixes from the page audit ---------- */
+
+/* Header avatar: Stud.IP's 1px white border sits between the image and the accent ring */
+html.sx #avatar-menu img,
+html.sx #avatar-wrapper img { border: 0 !important; }
+
+/* Empty forum: the intro text used Stud.IP's dark grey */
+html.sx .empty-forum p { color: var(--sx-ink-2) !important; }
+
+/* Quotes in Blubber and forum posts: the "X wrote:" line was black */
+html.sx blockquote .author { color: var(--sx-ink-2) !important; font-weight: 600; }
+
+/* Table captions with actions (contacts, high score list) */
+html.sx table.default > caption .actions {
+  color: var(--sx-ink-2) !important;
+  border-color: var(--sx-line) !important;
+}
+html.sx table.default > caption .actions strong { color: var(--sx-ink) !important; }
+
+/* Article cards (profile news, questionnaires): separators in the header nav and footer */
+html.sx article.studip > header > nav > * { border-color: var(--sx-line) !important; }
+html.sx article.studip > footer { border-color: var(--sx-line) !important; }
+
+/* Course directory: faculty tiles were white boxes */
+html.sx .studip-tree-children > li.studip-tree-child {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 14px !important;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+html.sx .studip-tree-children > li.studip-tree-child:hover {
+  background: var(--sx-surface-2) !important;
+  border-color: var(--sx-accent-line) !important;
+  transform: translateY(-2px);
+}
+
+/* CKEditor in dark mode: drive its own color variables so labels, dropdowns and panels follow */
+html.sx.sx-dark {
+  --ck-color-base-foreground: var(--sx-surface-2);
+  --ck-color-base-background: var(--sx-surface);
+  --ck-color-base-border: var(--sx-line);
+  --ck-color-text: var(--sx-ink);
+  --ck-color-shadow-drop: rgba(0, 0, 0, 0.4);
+  --ck-color-button-default-hover-background: var(--sx-surface-3);
+  --ck-color-button-default-active-background: var(--sx-surface-3);
+  --ck-color-button-on-background: var(--sx-accent-soft);
+  --ck-color-button-on-hover-background: var(--sx-accent-soft);
+  --ck-color-button-on-color: var(--sx-accent-text);
+  --ck-color-dropdown-panel-background: var(--sx-surface);
+  --ck-color-dropdown-panel-border: var(--sx-line);
+  --ck-color-panel-background: var(--sx-surface);
+  --ck-color-panel-border: var(--sx-line);
+  --ck-color-list-background: var(--sx-surface);
+  --ck-color-list-button-hover-background: var(--sx-surface-3);
+  --ck-color-list-button-on-background: var(--sx-accent);
+  --ck-color-list-button-on-background-focus: var(--sx-accent);
+  --ck-color-list-button-on-text: var(--sx-on-accent);
+  --ck-color-input-background: var(--sx-surface-2);
+  --ck-color-input-border: var(--sx-line);
+  --ck-color-input-text: var(--sx-ink);
+  --ck-color-labeled-field-label-background: var(--sx-surface);
+  --ck-color-toolbar-background: var(--sx-surface-2);
+  --ck-color-toolbar-border: var(--sx-line);
+  --ck-color-tooltip-background: var(--sx-surface-3);
+  --ck-color-tooltip-text: var(--sx-ink);
+  --ck-color-split-button-hover-background: var(--sx-surface-3);
+  --ck-color-split-button-hover-border: var(--sx-line);
+}
+html.sx.sx-dark .ck.ck-toolbar .ck-button__label { color: var(--sx-ink) !important; }
+
+/* ---------- Fixes from the second, detailed audit ---------- */
+
+/* Table heads (notification settings): Stud.IP's light column separators */
+html.sx table.default > thead > tr > :is(th, td) { border-color: var(--sx-line) !important; }
+
+/* Message reading dialog: the body was near white with light text, so the message was unreadable */
+html.sx .message_body {
+  background: var(--sx-surface-2) !important;
+  color: var(--sx-ink) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 12px !important;
+  padding: 12px 14px !important;
+}
+
+/* Blue icon images (Opencast, global search results, plugins) are repainted by app.js as accent masks */
+html.sx img.sx-icon-img {
+  background: var(--sx-accent-text) !important;
+  -webkit-mask: var(--sx-icon-src) center / contain no-repeat;
+  mask: var(--sx-icon-src) center / contain no-repeat;
+  object-position: -99999px 0;
+}
+/* Icons that sit on an accent filled control use the on-accent color instead */
+html.sx :is(.input-group-append .button, .button.accept, button.accept) img.sx-icon-img {
+  background: var(--sx-on-accent) !important;
+}
+
+/* Plugins with inline white backgrounds or black text (evaluation, literature notes) in dark mode */
+html.sx.sx-dark :is(#content, .ui-dialog) :is([style*="background-color:white"], [style*="background-color: white"], [style*="background-color:#fff"], [style*="background-color: #fff"], [style*="background-color:#FFF"], [style*="background-color: #FFF"], [style*="background:white"], [style*="background: white"], [style*="background:#fff"], [style*="background: #fff"]) {
+  background-color: transparent !important;
+}
+html.sx.sx-dark :is(#content, .ui-dialog) :is([style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"], [style*="color:#000"], [style*="color: #000"], [style*="color:black"], [style*="color: black"]) {
+  color: var(--sx-ink) !important;
+}
+html.sx.sx-dark #content div[style*="border: 1px solid;"] {
+  border-color: var(--sx-line) !important;
+  border-radius: 10px;
+}
+
+/* Module directory: search band with an inline light background */
+html.sx #content > div[style]:has(> form) {
+  background: var(--sx-surface) !important;
+  border: 1px solid var(--sx-line);
+  border-radius: var(--sx-radius);
+}
+
+/* Literature lists: group header rows */
+html.sx tr.header-row > th a.toggler,
+html.sx tr.header-row > th { color: var(--sx-ink) !important; }
+
+/* Content boxes with footers (BigBlueButton rooms) */
+html.sx section.contentbox > footer {
+  background: var(--sx-surface-2) !important;
+  border-color: var(--sx-line) !important;
+}
+
+/* Courseware: default tile color and the sidebar action icons */
+html.sx .cw-tile.studip-blue { background-color: color-mix(in oklab, var(--sx-accent) 28%, var(--sx-surface-2)) !important; }
+/* Default Courseware cover (inlined PNG): keep its pattern, take the accent hue */
+html.sx .preview-image[style*="data:image/png"] { background-color: var(--sx-accent) !important; background-blend-mode: luminosity !important; }
+html.sx [class*="cw-"][class*="-widget"] li > button::before { background-color: var(--sx-accent-text) !important; }
+
+/* Opencast: pagination and the badges on video thumbnails */
+html.sx .oc--pagination button {
+  background: var(--sx-surface-2) !important;
+  border-color: var(--sx-line) !important;
+  color: var(--sx-ink-2) !important;
+  border-radius: 8px !important;
+}
+html.sx .oc--pagination button.active {
+  background: var(--sx-accent) !important;
+  border-color: var(--sx-accent) !important;
+  color: var(--sx-on-accent) !important;
+}
+html.sx .oc--previewimage .oc--views,
+html.sx .oc--previewimage .oc--duration {
+  background: rgba(10, 10, 14, 0.72) !important;
+  color: #fff !important;
+  border-radius: 6px;
+}
+
+/* Cliqr: blue poll icons, answer count bubbles and dotted separators */
+html.sx .cliqr--icon-color-blue { color: var(--sx-accent-text) !important; fill: var(--sx-accent-text) !important; }
+html.sx .cliqr--icon-color-blue path { fill: currentColor !important; }
+html.sx .cliqr--archive-bubble .bubble { background: var(--sx-accent) !important; color: var(--sx-on-accent) !important; }
+html.sx .cliqr--moment { border-color: var(--sx-line) !important; }
