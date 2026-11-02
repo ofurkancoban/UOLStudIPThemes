@@ -662,6 +662,74 @@ html.sx .sx-todo-del {
 html.sx .sx-todo-item:hover .sx-todo-del,
 html.sx .sx-todo-del:focus-visible { opacity: 1; }
 html.sx .sx-todo-del:hover { background: var(--sx-surface-3); color: var(--sx-bad); }
+html.sx .sx-todo-edit-btn {
+  all: unset;
+  cursor: pointer;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.12s, background 0.12s;
+}
+html.sx .sx-todo-edit-btn::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: var(--sx-ink-3);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16v4z'/%3E%3Cpath d='M13.5 6.5l4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20h4L19 9l-4-4L4 16v4z'/%3E%3Cpath d='M13.5 6.5l4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: background 0.12s;
+}
+html.sx .sx-todo-item:hover .sx-todo-edit-btn,
+html.sx .sx-todo-edit-btn:focus-visible { opacity: 1; }
+html.sx .sx-todo-edit-btn:hover { background: var(--sx-surface-3); }
+html.sx .sx-todo-edit-btn:hover::before { background: var(--sx-accent-text); }
+html.sx .sx-todo-text { cursor: text; }
+
+/* Inline edit form: same box as the composer, laid out inside the row */
+html.sx .sx-todo-item.is-editing { padding: 6px 0; background: transparent; }
+html.sx .sx-todo-edit {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--sx-accent-line);
+  border-radius: 12px;
+  background: var(--sx-surface-2);
+  box-shadow: 0 0 0 4px var(--sx-accent-soft);
+}
+html.sx .sx-todo-edit [data-text] { grid-column: 1 / -1; }
+html.sx .sx-todo-edit input,
+html.sx .sx-todo-edit select {
+  min-width: 0;
+  height: 30px !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: var(--sx-ink) !important;
+  font: 14px var(--sx-font) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+html.sx .sx-todo-edit :is(select, [data-due]) { font-size: 12px !important; color: var(--sx-ink-2) !important; background: var(--sx-surface-3) !important; }
+html.sx .sx-todo-edit-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 6px; }
+html.sx .sx-todo-edit-actions button {
+  all: unset;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font: 600 12.5px var(--sx-font);
+  color: var(--sx-ink-2);
+}
+html.sx .sx-todo-edit-actions button:hover { background: var(--sx-surface-3); color: var(--sx-ink); }
+html.sx .sx-todo-edit-actions button[type="submit"] { background: var(--sx-accent); color: var(--sx-on-accent); }
+html.sx .sx-todo-edit-actions button[type="submit"]:hover { filter: brightness(1.08); background: var(--sx-accent); color: var(--sx-on-accent); }
+html.sx .sx-todo-edit-actions button:focus-visible { outline: 2px solid var(--sx-accent); outline-offset: 2px; }
 html.sx .sx-todo-empty {
   grid-column: 1 / -1;
   display: flex;

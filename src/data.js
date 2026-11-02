@@ -363,7 +363,7 @@
       startsIn: "starts in", minutes: "min",
       todo: "To-do", addTask: "Add a task, e.g. read chapter 4", noCourse: "No course", course: "Course",
       due: "Due date", add: "Add", open: "open", overdue: "Overdue", nothingTodo: "Nothing to do. Enjoy it.",
-      showDone: "Show done", hideDone: "Hide done", clearDone: "Clear done", markDone: "Mark as done", delete: "Delete"
+      showDone: "Show done", hideDone: "Hide done", clearDone: "Clear done", markDone: "Mark as done", delete: "Delete", edit: "Edit", save: "Save", cancel: "Cancel"
     },
     de: {
       morning: "Guten Morgen", day: "Hallo", evening: "Guten Abend", night: "Noch wach",
@@ -381,7 +381,7 @@
       startsIn: "beginnt in", minutes: "Min.",
       todo: "Aufgaben", addTask: "Aufgabe hinzufügen, z. B. Kapitel 4 lesen", noCourse: "Keine Veranstaltung", course: "Veranstaltung",
       due: "Fällig am", add: "Hinzufügen", open: "offen", overdue: "Überfällig", nothingTodo: "Nichts zu tun. Genieß es.",
-      showDone: "Erledigte zeigen", hideDone: "Erledigte ausblenden", clearDone: "Erledigte löschen", markDone: "Als erledigt markieren", delete: "Löschen"
+      showDone: "Erledigte zeigen", hideDone: "Erledigte ausblenden", clearDone: "Erledigte löschen", markDone: "Als erledigt markieren", delete: "Löschen", edit: "Bearbeiten", save: "Speichern", cancel: "Abbrechen"
     }
   };
   Orbit.t = (k) => (T[Orbit.lang] || T.en)[k] || T.en[k] || k;

@@ -1002,6 +1002,11 @@ html.sx .studip-widget .widget-title {
 html.sx .studip-widget .header-options { opacity: 0.25; transition: opacity 0.15s; float: none !important; }
 html.sx .studip-widget:hover .header-options { opacity: 1; }
 html.sx .studip-widget .header-options .studip-icon { color: var(--sx-ink-3) !important; }
+/* Activity feed toggles draw their icon as a masked ::before tinted with the link color */
+html.sx .studip-widget .header-options a { color: var(--sx-ink-3) !important; }
+html.sx .studip-widget .header-options a::before { background-color: currentColor !important; }
+html.sx .studip-widget .header-options a:hover,
+html.sx .studip-widget .header-options a:hover .studip-icon { color: var(--sx-accent-text) !important; }
 
 html.sx .studip-widget > div:not(.widget-header) {
   background: transparent !important;
@@ -1822,6 +1827,9 @@ html.sx #scroll-to-top {
   height: 44px !important;
   display: grid !important;
   place-items: center;
+  /* Stud.IP's 10px padding plus our border leaves less room than the 24px icon, pushing it off center */
+  padding: 0 !important;
+  box-sizing: border-box !important;
   background: var(--sx-glass) !important;
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   backdrop-filter: blur(16px) saturate(160%);
@@ -3604,8 +3612,12 @@ html.sx :is(.input-group-append .button, .button.accept, button.accept) img.sx-i
 }
 
 /* Plugins with inline white backgrounds or black text (evaluation, literature notes) in dark mode */
-html.sx.sx-dark :is(#content, .ui-dialog) :is([style*="background-color:white"], [style*="background-color: white"], [style*="background-color:#fff"], [style*="background-color: #fff"], [style*="background-color:#FFF"], [style*="background-color: #FFF"], [style*="background:white"], [style*="background: white"], [style*="background:#fff"], [style*="background: #fff"]) {
+html.sx.sx-dark :is(#content, .ui-dialog) :is([style*="background-color:white"], [style*="background-color: white"], [style*="background-color:#fff"], [style*="background-color: #fff"], [style*="background-color:#FFF"], [style*="background-color: #FFF"], [style*="background:white"], [style*="background: white"], [style*="background:#fff"], [style*="background: #fff"], [style*="background-color:rgb(255,255,255)"], [style*="background-color: rgb(255, 255, 255)"]) {
   background-color: transparent !important;
+}
+/* Text pasted from other sites keeps a near-black color next to the white background removed above */
+html.sx.sx-dark .formatted-content :is([style*="background-color:rgb(255,255,255)"], [style*="background-color: rgb(255, 255, 255)"], [style*="background-color:#fff"], [style*="background-color: #fff"], [style*="background-color:white"], [style*="background-color: white"]) {
+  color: var(--sx-ink) !important;
 }
 html.sx.sx-dark :is(#content, .ui-dialog) :is([style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"], [style*="color:#000"], [style*="color: #000"], [style*="color:black"], [style*="color: black"]) {
   color: var(--sx-ink) !important;
@@ -3662,3 +3674,54 @@ html.sx .cliqr--icon-color-blue { color: var(--sx-accent-text) !important; fill:
 html.sx .cliqr--icon-color-blue path { fill: currentColor !important; }
 html.sx .cliqr--archive-bubble .bubble { background: var(--sx-accent) !important; color: var(--sx-on-accent) !important; }
 html.sx .cliqr--moment { border-color: var(--sx-line) !important; }
+
+/* Notice board article dialog: meta footer and image column */
+html.sx .sb-article > footer.meta {
+  background: var(--sx-surface-2) !important;
+  border: 1px solid var(--sx-line) !important;
+  border-radius: 10px;
+  color: var(--sx-ink-3) !important;
+}
+html.sx .sb-article > footer.meta :is(time, span, address) { color: var(--sx-ink-3) !important; }
+html.sx .sb-article > footer.meta a { color: var(--sx-accent-text) !important; font-style: normal; font-weight: 600; }
+html.sx .sb-article-images { border-color: var(--sx-line) !important; }
+html.sx .sb-article-images li { border-color: var(--sx-line) !important; border-radius: 8px; overflow: hidden; }
+
+/* Activity stream widget: cards, provider badges and readable headings */
+html.sx #afeed section.activity { background: var(--sx-surface-2) !important; border: 1px solid var(--sx-line) !important; border-radius: 12px !important; }
+html.sx #afeed section.activity .provider_circle { background: var(--sx-accent) !important; border-color: var(--sx-surface) !important; color: var(--sx-on-accent) !important; }
+html.sx #afeed section.activity .provider_circle .studip-icon { color: var(--sx-on-accent) !important; }
+html.sx #afeed section.activity > header,
+html.sx #afeed .activity-heading,
+html.sx #afeed .activity-heading h3 { color: var(--sx-ink) !important; }
+html.sx #afeed .activity-date,
+html.sx #afeed .activity-day { color: var(--sx-ink-3) !important; border-color: var(--sx-line) !important; }
+html.sx #afeed .activity-content { background: transparent !important; color: var(--sx-ink-2) !important; }
+html.sx #afeed .activity-avatar { border-radius: 6px; }
+
+/* Course forum (Vue): discussion card, quote balloon, tags and status line */
+html.sx .forum__container header.header { background: var(--sx-surface) !important; border: 1px solid var(--sx-line) !important; border-radius: var(--sx-radius) !important; color: var(--sx-ink) !important; }
+html.sx .forum__container header.header h2 { color: var(--sx-ink) !important; }
+html.sx .forum__container .topic-card { background: var(--sx-surface) !important; border: 1px solid var(--sx-line) !important; border-radius: 14px !important; transition: border-color 0.15s, transform 0.15s, background 0.15s; }
+html.sx .forum__container a:hover .topic-card { background: var(--sx-surface-2) !important; border-color: var(--sx-accent-line) !important; transform: translateY(-2px); }
+html.sx .forum__container .topic-title { color: var(--sx-ink) !important; font-weight: 600; }
+html.sx .forum__container .topic-card__footer,
+html.sx .forum__container .topic-card__footer small,
+html.sx .forum__container .topic-card__footer .studip-icon { color: var(--sx-ink-3) !important; border-color: var(--sx-line) !important; }
+html.sx .forum__container .tags-container__tag { border-color: var(--sx-line) !important; color: var(--sx-ink-2) !important; background: var(--sx-surface-2) !important; }
+html.sx .forum__container button.as-link { color: var(--sx-accent-text) !important; }
+html.sx .forum__container .discussion { background: var(--sx-surface) !important; border: 1px solid var(--sx-line) !important; border-radius: var(--sx-radius) !important; }
+html.sx .forum__container :is(.discussion__status, .post__author-name-container) { color: var(--sx-ink-3) !important; }
+html.sx .forum__container .post__text { color: var(--sx-ink) !important; }
+html.sx .forum__container img.user-profile { border-color: var(--sx-surface) !important; }
+html.sx .forum__container .ballon-action { background: var(--sx-surface-3) !important; border-color: var(--sx-line) !important; color: var(--sx-accent-text) !important; }
+html.sx .forum__container .ballon-action__button { color: var(--sx-accent-text) !important; }
+
+/* File licence picker: theme rows, a readable selected row and its description */
+html.sx fieldset.select_terms_of_use > label { background: var(--sx-surface) !important; border-color: var(--sx-line) !important; color: var(--sx-ink) !important; transition: background 0.12s; }
+html.sx fieldset.select_terms_of_use > label:hover { background: var(--sx-surface-2) !important; }
+html.sx fieldset.select_terms_of_use > input:checked + label { background: var(--sx-accent-soft) !important; border-color: var(--sx-accent-line) !important; color: var(--sx-ink) !important; }
+html.sx fieldset.select_terms_of_use > input:checked + label .text { color: var(--sx-ink) !important; font-weight: 600; }
+html.sx fieldset.select_terms_of_use > .terms_of_use_description { background: var(--sx-surface-2) !important; border-color: var(--sx-accent-line) !important; color: var(--sx-ink-2) !important; }
+html.sx fieldset.select_terms_of_use > label:first-of-type { border-radius: 12px 12px 0 0; }
+html.sx fieldset.select_terms_of_use > label:last-of-type { border-radius: 0 0 12px 12px; }

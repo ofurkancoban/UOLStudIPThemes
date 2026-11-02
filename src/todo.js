@@ -14,6 +14,7 @@
   let courses = [];
   let card = null;
   let showDone = false;
+  let editingId = null;
 
   const save = () => chrome.storage.sync.set({ [KEY]: todos });
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -40,7 +41,28 @@
     return { open, done };
   }
 
+  function courseOptions(selected) {
+    const list = courses.filter((c) => c.current || c.id === selected).sort((a, b) => a.title.localeCompare(b.title));
+    return `<option value="">${esc(t("noCourse"))}</option>` +
+      list.map((c) => `<option value="${esc(c.id)}"${c.id === selected ? " selected" : ""}>${esc(c.title)}</option>`).join("");
+  }
+
+  function editHtml(x) {
+    return `<li class="sx-todo-item is-editing" data-id="${esc(x.id)}">
+      <form class="sx-todo-edit" data-edit autocomplete="off">
+        <input type="text" data-text maxlength="200" value="${esc(x.text)}" aria-label="${esc(t("edit"))}">
+        <select data-course aria-label="${esc(t("course"))}">${courseOptions(x.course)}</select>
+        <input type="date" data-due value="${esc(x.due || "")}" aria-label="${esc(t("due"))}">
+        <div class="sx-todo-edit-actions">
+          <button type="button" data-act="cancel-edit">${esc(t("cancel"))}</button>
+          <button type="submit">${esc(t("save"))}</button>
+        </div>
+      </form>
+    </li>`;
+  }
+
   function itemHtml(x) {
+    if (x.id === editingId) return editHtml(x);
     const course = courses.find((c) => c.id === x.course);
     const color = course ? groupColor(course.group) || `hsl(${hue(course.id)} 75% 55%)` : null;
     const due = dueInfo(x.due);
@@ -52,9 +74,10 @@
     return `<li class="sx-todo-item ${x.done ? "is-done" : ""}" data-id="${esc(x.id)}">
       <button type="button" class="sx-todo-check" data-act="toggle" aria-pressed="${x.done}" title="${esc(t("markDone"))}"></button>
       <div class="sx-todo-body">
-        <span class="sx-todo-text">${esc(x.text)}</span>
+        <span class="sx-todo-text" title="${esc(t("edit"))}">${esc(x.text)}</span>
         ${meta.length ? `<span class="sx-todo-meta">${meta.join("")}</span>` : ""}
       </div>
+      <button type="button" class="sx-todo-edit-btn" data-act="edit" title="${esc(t("edit"))}" aria-label="${esc(t("edit"))}"></button>
       <button type="button" class="sx-todo-del" data-act="delete" title="${esc(t("delete"))}" aria-label="${esc(t("delete"))}">×</button>
     </li>`;
   }
@@ -85,6 +108,14 @@
     if (!card) return;
     const { open, done } = sorted();
     const list = card.querySelector("[data-list]");
+    // Keep what the user typed if the list re-renders while a task is being edited
+    const draft = list.querySelector("[data-edit]");
+    const kept = draft && {
+      text: draft.querySelector("[data-text]").value,
+      course: draft.querySelector("[data-course]").value,
+      due: draft.querySelector("[data-due]").value
+    };
+    if (editingId && !todos.some((x) => x.id === editingId)) editingId = null;
     let html = open.map(itemHtml).join("");
     if (freshId) html = html.replace(`data-id="${freshId}"`, `data-id="${freshId}" data-fresh`);
     if (!open.length) html = `<li class="sx-todo-empty">${esc(t("nothingTodo"))}</li>`;
@@ -95,6 +126,17 @@
     }
     list.innerHTML = html;
     list.querySelector("[data-fresh]")?.classList.add("is-new");
+    const form = list.querySelector("[data-edit]");
+    if (form) {
+      if (kept) {
+        form.querySelector("[data-text]").value = kept.text;
+        form.querySelector("[data-course]").value = kept.course;
+        form.querySelector("[data-due]").value = kept.due;
+      }
+      const field = form.querySelector("[data-text]");
+      field.focus();
+      field.setSelectionRange(field.value.length, field.value.length);
+    }
     freshId = null;
     card.querySelector("[data-count]").textContent = open.length ? `${open.length} ${t("open")}` : "";
     // Share of finished tasks, shown as a thin bar under the title
@@ -167,11 +209,13 @@
       if (!btn) return;
       const act = btn.dataset.act;
       if (act === "show-done") { showDone = !showDone; renderList(); return; }
+      if (act === "cancel-edit") { editingId = null; renderList(); return; }
       if (act === "clear-done") { todos = todos.filter((x) => !x.done); save(); renderList(); return; }
       const id = btn.closest("[data-id]")?.dataset.id;
       const item = todos.find((x) => x.id === id);
       if (!item) return;
       const row = btn.closest("[data-id]");
+      if (act === "edit") { editingId = id; renderList(); return; }
       const animate = document.documentElement.classList.contains("sx-motion");
       if (act === "toggle") {
         item.done = !item.done;
@@ -194,6 +238,38 @@
       }
       if (act === "delete") todos = todos.filter((x) => x.id !== id);
       save();
+      renderList();
+    });
+
+    // Double-click a task's text to edit it in place
+    card.addEventListener("dblclick", (e) => {
+      const text = e.target.closest(".sx-todo-text");
+      const id = text?.closest("[data-id]")?.dataset.id;
+      if (!id) return;
+      editingId = id;
+      renderList();
+    });
+
+    card.addEventListener("submit", (e) => {
+      const form = e.target.closest("[data-edit]");
+      if (!form) return;
+      e.preventDefault();
+      const item = todos.find((x) => x.id === editingId);
+      const text = form.querySelector("[data-text]").value.trim();
+      if (item && text) {
+        item.text = text;
+        item.course = form.querySelector("[data-course]").value || null;
+        item.due = form.querySelector("[data-due]").value || null;
+        save();
+      }
+      editingId = null;
+      renderList();
+    });
+
+    card.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || !e.target.closest("[data-edit]")) return;
+      e.stopPropagation();
+      editingId = null;
       renderList();
     });
 
